@@ -33,8 +33,6 @@ def createDict():
 	#testing
 	#print(dictionary.keys())
 
-createDict()
-
 
 #data structure #2
 
