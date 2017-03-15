@@ -7,5 +7,8 @@ def loadCsvToArray():
 		reader = csv.reader(file, dialect='AED')
 		aux=[]
 		for row in reader:
-			aux.append(row[2:])
+			aux.append(row)
+	print(aux)
 	return
+
+loadCsvToArray()
