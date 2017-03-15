@@ -11,7 +11,7 @@ def loadCsvToArray():
 		for row in reader:
 			array.append(row)						#appends a "line" of the '.csv' file, and adds it to the list 'Array'
 	
-	return array 									#returns the 'Array' so you can use it later
+	return array									#returns the 'Array' so you can use it later
 
 #data structure #2
 
