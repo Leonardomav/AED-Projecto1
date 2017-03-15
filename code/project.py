@@ -11,4 +11,3 @@ def loadCsvToArray():
 	print(aux)
 	return
 
-loadCsvToArray()
