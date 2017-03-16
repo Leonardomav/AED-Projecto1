@@ -83,14 +83,14 @@ def searchDict(dictionary, mode, countries, countryCodes):
 		keyWord = str(countries[index] + ";" + countryCodes[index])
 		found = True
 
-	if mode == 0 and found:	#default, returns nothing
+	if mode == 0 and found:			#default, returns nothing
 		return
 	
 	elif mode == 1 and found:		#returns the keyWord, for use on other functions
 		return keyWord
 	
-	elif mode == 2 and found:		#returns boolean, can be useful
-		return True
+	elif mode == 2 and found:		#[TODO] prints the values of the country specified
+		return 
 
 def addValue(dictionary, countries, countryCodes):
 	word = searchDict(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
@@ -162,7 +162,7 @@ def removeValue(dictionary, countries, countryCodes):
 			#print(values)
 			break									#stops the iteration, no need to continue (obvious, right?)
 
-def countriesWithData(countries, countryCodes):
+def countriesWithData(countries, countryCodes):		#prints every country and it's code
 	print("Code -\tCountry Name")
 	for i in range(0, len(countries)):		#len(countries) == len(countryCodes)
 		print(countryCodes[i] + " - " + countries[i] + "\t\t\t\t"),
@@ -170,13 +170,12 @@ def countriesWithData(countries, countryCodes):
 		if i % 2 == 0:
 			print
 
-def showAllData(dictionary, countries, countryCodes):
+def showAllData(dictionary, countries, countryCodes):	#prints every country and the data we have on it
 	print("\n\n\n")
 	for i in range(0, len(countries)):		#len(countries) == len(countryCodes)
 		print(countries[i] + " ->\t"),
 		printYearvalueList(dictionary.get(countries[i] + ";" + countryCodes[i]))
 		print("\n\n")
-
 
 def printYearvalue(values):		#self explanatory, I think
 	print(str(values[0]) + " - " + values[1] + "\t"), 	#"Year - Value"
@@ -184,8 +183,6 @@ def printYearvalue(values):		#self explanatory, I think
 def printYearvalueList(values):
 	for i in range(0, len(values)):
 		print(str(values[i][0]) + " - " + values[i][1] + "\t\t"), 	#"Year - Value"
-
-
 
 #Rembemer to remove this lines under
 #if __name__ == '__main__':
