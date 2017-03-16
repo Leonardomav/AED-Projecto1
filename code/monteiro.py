@@ -90,29 +90,32 @@ def searchDictNew(dictionary, mode, countries, countryCodes):
 	elif mode == 2 and found:		#returns boolean, can be useful
 		return True
 
-def addValue(dictionary):
-	word = searchDict(dictionary, 1) 	#keyWord -> dict key
+def addValue(dictionary, countries, countryCodes):
+	word = searchDictNew(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
 	years = []
 	values = dictionary.get(word)		#values for the keyWord
 	print("\n") 						#Aesthetic purposes
 	for i in range(0, len(values)):
 		years.append(values[i][0])		#Creates a list with the years we have data on
 
-	yearToAdd = raw_input("Which year do you want to add info about?\n\n>")
+	yearToAdd = raw_input("\nWhich year do you want to add info about?\n\n>")
 	#[TODO] protect input ^
 
 	if int(yearToAdd) in years:			#self explanatory IMO
-		print("Year already in the directory, if you want to edit it, select the 'edit' option")
+		print("\nYear already in the directory, if you want to edit it, select the 'edit' option")
 
 	else:
-		valueToAdd = raw_input("What's the value you want to add?\n\n>")		#[TODO]edit this
+		valueToAdd = raw_input("\nWhat's the value you want to add?\n\n>")		#[TODO]edit this
 		#[TODO] protect input ^
 		values.append([int(yearToAdd), valueToAdd])		#adds the new information to the values list
 		values = sorted(values, key = itemgetter(0))	#sorts the list of years/values
 		dictionary.update({word : values})			#updates the dictionary
 
-def editValue(dictionary):
-	word = searchDict(dictionary, 1) 	#keyWord -> dict key
+		#testing
+		print(values)
+
+def editValue(dictionary, countries, countryCodes):
+	word = searchDictNew(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
 	years = []
 	values = dictionary.get(word)		#values for the keyWord
 	print("\n") 						#Aesthetic purposes
@@ -120,19 +123,22 @@ def editValue(dictionary):
 		printYearvalue(values[i])		#Prints existing data format: "Year - Value"
 		years.append(values[i][0])		#Creates a list with the years we have data on
 
-	valueToEdit = raw_input("Which year you want to edit?\n\n>")
+	valueToEdit = raw_input("\nWhich year you want to edit?\n\n>")
 	#[TODO] protect input ^
 
 	for i in range(0, len(values)):
 		if int(valueToEdit) == values[i][0]:		#needs to have the int() in order to work
-			newValue = raw_input("What should be the new value?")	#asks for the new value
+			newValue = raw_input("\nWhat should be the new value?\n\n>")	#asks for the new value
 			#[TODO] protect input ^
 			values[i][1] = newValue					#changes the value
 			dictionary.update({word : values})		#updates the dictionary
+
+			#testing
+			print(values)
 			break									#stops the iteration, no need to continue (obvious, right?)
 
-def removeValue(dictionary):
-	word = searchDict(dictionary, 1) 	#keyWord -> dict key
+def removeValue(dictionary, countries, countryCodes):
+	word = searchDictNew(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
 	years = []
 	values = dictionary.get(word)		#values for the keyWord
 	print("\n") 						#Aesthetic purposes
@@ -140,22 +146,25 @@ def removeValue(dictionary):
 		printYearvalue(values[i])		#Prints existing data format: "Year - Value"
 		years.append(values[i][0])		#Creates a list with the years we have data on
 
-	valueToRemove = raw_input("Which year you want to remove?\n\n>")
+	valueToRemove = raw_input("\nWhich year you want to remove?\n\n>")
 	#[TODO] protect input ^
 
 	for i in range(0, len(values)):
 		if int(valueToRemove) == values[i][0]:		#needs to have the int() in order to work
 			values.pop(i)							#removes the specified year from the list
 			dictionary.update({word : values})		#updates the dictionary
+
+			#testing
+			print(values)
 			break									#stops the iteration, no need to continue (obvious, right?)
 
 def printYearvalue(values):		#self explanatory, I think
 	print(str(values[0]) + " - " + values[1])	#"Year - Value"
 
 #Rembemer to remove this lines under
-if __name__ == '__main__':
-	dictionary = createDict()
-	dictionaryNew, countries, countryCodes = createDictNew()
-	searchDictNew(dictionaryNew, 1, countries, countryCodes)
+#if __name__ == '__main__':
+	#dictionary = createDict()
+	#dictionaryNew, countries, countryCodes = createDictNew()
+	#removeValue(dictionaryNew, countries, countryCodes)
 	#searchDict(dictionary)
 	#removeValue(dictionary)
