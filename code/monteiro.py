@@ -41,8 +41,6 @@ def searchDict(dictionary, mode):
 	#input ^ [TODO] protect it
 	if keyWord in dictionary.keys():	#if the keyword == one of the keys
 		data = dictionary.get(keyWord)	#gets the value of the key (keyword)
-		#testing (1 line)
-		#print(data)
 		if mode == 0:	#default, returns nothing
 			return
 		
@@ -58,15 +56,17 @@ def addValue(dictionary):
 	values = dictionary.get(word)		#values for the keyword
 	print("\n") 						#Aesthetic purposes
 	for i in range(0, len(values)):
-		years.append(values[i][0])		#makes a list with the years
+		years.append(values[i][0])		#Creates a list with the years we have data on
 
 	yearToAdd = raw_input("Which year do you want to add info about?\n\n>")
+	#[TODO] protect input ^
 
-	if int(yearToAdd) in years:
+	if int(yearToAdd) in years:			#self explanatory IMO
 		print("Year already in the directory, if you want to edit it, select the 'edit' option")
 
 	else:
-		valueToAdd = raw_input("What's the value you want to add?\n\n>")		#edit this
+		valueToAdd = raw_input("What's the value you want to add?\n\n>")		#[TODO]edit this
+		#[TODO] protect input ^
 		values.append([int(yearToAdd), valueToAdd])		#adds the new information to the values list
 		values = sorted(values, key = itemgetter(0))	#sorts the list of years/values
 		dictionary.update({word : values})			#updates the dictionary
@@ -78,15 +78,36 @@ def editValue(dictionary):
 	print("\n") 						#Aesthetic purposes
 	for i in range(0, len(values)):
 		printYearvalue(values[i])		#Prints existing data format: "Year - Value"
-		years.append(values[i][0])
+		years.append(values[i][0])		#Creates a list with the years we have data on
 
 	valueToEdit = raw_input("Which year you want to edit?\n\n>")
+	#[TODO] protect input ^
 
 	for i in range(0, len(values)):
 		if int(valueToEdit) == values[i][0]:		#needs to have the int() in order to work
 			newValue = raw_input("What should be the new value?")	#asks for the new value
+			#[TODO] protect input ^
 			values[i][1] = newValue					#changes the value
 			dictionary.update({word : values})		#updates the dictionary
+			break									#stops the iteration, no need to continue (obvious, right?)
+
+def removeValue(dictionary):
+	word = searchDict(dictionary, 1) 	#keyword -> dict key
+	years = []
+	values = dictionary.get(word)		#values for the keyword
+	print("\n") 						#Aesthetic purposes
+	for i in range(0, len(values)):
+		printYearvalue(values[i])		#Prints existing data format: "Year - Value"
+		years.append(values[i][0])		#Creates a list with the years we have data on
+
+	valueToRemove = raw_input("Which year you want to remove?\n\n>")
+	#[TODO] protect input ^
+
+	for i in range(0, len(values)):
+		if int(valueToRemove) == values[i][0]:		#needs to have the int() in order to work
+			values.pop(i)							#removes the specified year from the list
+			dictionary.update({word : values})		#updates the dictionary
+			break									#stops the iteration, no need to continue (obvious, right?)
 
 def printYearvalue(values):		#self explanatory, I think
 	print(str(values[0]) + " - " + values[1])	#"Year - Value"
@@ -95,4 +116,4 @@ def printYearvalue(values):		#self explanatory, I think
 if __name__ == '__main__':
 	dictionary = createDict()
 	#searchDict(dictionary)
-	addValue(dictionary)
+	removeValue(dictionary)
