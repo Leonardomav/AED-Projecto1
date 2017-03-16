@@ -51,11 +51,11 @@ def menuMont(mont):
 
 	print("What do you want to do with this data structure?")
 	print
-	print("1 - Add a new value to a year we have no info about")
-	print("2 - Edit an existing value")
-	print("3 - Remove an existing value from a specific year")
-	print("4 - Show existing data about every country")
-	print("5 - Show existing data about a specific country")
+	print("1 - Add a new value to a year we have no info about")	#[TODO]
+	print("2 - Edit an existing value")								#[TODO]
+	print("3 - Remove an existing value from a specific year")		#[TODO]
+	print("4 - Show existing data about every country")				#[TODO]
+	print("5 - Show existing data about a specific country")		#[TODO]
 
 	choice = raw_input(">")
 	if choice == '1':
@@ -68,6 +68,6 @@ def menuMont(mont):
 		return
 	elif choice == '5':
  		return
- 		
+
 if __name__ == '__main__': 		
 	main()
