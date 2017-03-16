@@ -121,6 +121,7 @@ def editValue(dictionary, countries, countryCodes):
 	years = []
 	values = dictionary.get(word)		#values for the keyWord
 	print("\n") 						#Aesthetic purposes
+	print("Year - Value")
 	for i in range(0, len(values)):
 		printYearvalue(values[i])		#Prints existing data format: "Year - Value"
 		years.append(values[i][0])		#Creates a list with the years we have data on
@@ -144,6 +145,7 @@ def removeValue(dictionary, countries, countryCodes):
 	years = []
 	values = dictionary.get(word)		#values for the keyWord
 	print("\n") 						#Aesthetic purposes
+	print("Year - Value")
 	for i in range(0, len(values)):
 		printYearvalue(values[i])		#Prints existing data format: "Year - Value"
 		years.append(values[i][0])		#Creates a list with the years we have data on
@@ -168,8 +170,21 @@ def countriesWithData(countries, countryCodes):
 		if i % 2 == 0:
 			print
 
+def showAllData(dictionary, countries, countryCodes):
+	print("\n\n\n")
+	for i in range(0, len(countries)):		#len(countries) == len(countryCodes)
+		print(countries[i] + " ->\t"),
+		printYearvalueList(dictionary.get(countries[i] + ";" + countryCodes[i]))
+		print("\n\n")
+
+
 def printYearvalue(values):		#self explanatory, I think
-	print(str(values[0]) + " - " + values[1])	#"Year - Value"
+	print(str(values[0]) + " - " + values[1] + "\t"), 	#"Year - Value"
+
+def printYearvalueList(values):
+	for i in range(0, len(values)):
+		print(str(values[i][0]) + " - " + values[i][1] + "\t\t"), 	#"Year - Value"
+
 
 
 #Rembemer to remove this lines under
