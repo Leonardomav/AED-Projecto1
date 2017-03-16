@@ -56,6 +56,18 @@ def menuMont(mont):
 	print("3 - Remove an existing value from a specific year")
 	print("4 - Show existing data about every country")
 	print("5 - Show existing data about a specific country")
- 
+
+	choice = raw_input(">")
+	if choice == '1':
+		return
+	elif choice == '2':
+		return
+	elif choice == '3':
+		return
+	elif choice == '4':
+		return
+	elif choice == '5':
+ 		return
+ 		
 if __name__ == '__main__': 		
 	main()
