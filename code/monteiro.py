@@ -14,23 +14,24 @@ def loadCsvToArray():
 	file.close()									#closes the file since we don't need it open anymore
 	return array									#returns the 'Array' so you can use it later
 
-def createDict():
-	dictionary = {} 	#creates a new dictionary
-	origin = loadCsvToArray()	#array with the file
+#deprecated
+# def createDict():
+# 	dictionary = {} 	#creates a new dictionary
+# 	origin = loadCsvToArray()	#array with the file
 
-	for i in range(1, len(origin)):		#each country
-		data = []		#creates a list to put values in
+# 	for i in range(1, len(origin)):		#each country
+# 		data = []		#creates a list to put values in
 
-		for j in range(2, len(origin[i])):	#goes through the years & values
+# 		for j in range(2, len(origin[i])):	#goes through the years & values
 
-			if origin[i][j] != '':		#if it's not blank
-				data.append([int(j + 1959), origin[i][j]]) #appends [year, value] to the key's Value array
+# 			if origin[i][j] != '':		#if it's not blank
+# 				data.append([int(j + 1959), origin[i][j]]) #appends [year, value] to the key's Value array
 
-		dictionary.update({str(origin[i][1]) : data}) 		#key value = list of [date, value]
+# 		dictionary.update({str(origin[i][1]) : data}) 		#key value = list of [date, value]
 
-	return dictionary
+# 	return dictionary
 
-def createDictNew():	#uses the 'new' keys
+def createDict():	#uses the 'new' keys
 	dictionary = {} 	#creates a new dictionary
 	origin = loadCsvToArray()	#array with the file
 	countries = []
@@ -51,22 +52,23 @@ def createDictNew():	#uses the 'new' keys
 
 	return (dictionary, countries, countryCodes)
 
-def searchDict(dictionary, mode):
-	#searches in the dictionary for the keyWord the user inputs
-	keyWord = raw_input("Which country are you looking for? Insert the code (e.g. AGO for Angola or PRT for Portugal)\n\n>")
-	#input ^ [TODO] protect it
-	if keyWord in dictionary.keys():	#if the keyWord == one of the keys
-		data = dictionary.get(keyWord)	#gets the value of the key (keyWord)
-		if mode == 0:	#default, returns nothing 
-			return
+#deprecated
+# def searchDict(dictionary, mode):
+# 	#searches in the dictionary for the keyWord the user inputs
+# 	keyWord = raw_input("Which country are you looking for? Insert the code (e.g. AGO for Angola or PRT for Portugal)\n\n>")
+# 	#input ^ [TODO] protect it
+# 	if keyWord in dictionary.keys():	#if the keyWord == one of the keys
+# 		data = dictionary.get(keyWord)	#gets the value of the key (keyWord)
+# 		if mode == 0:	#default, returns nothing 
+# 			return
 		
-		elif mode == 1:		#returns the keyWord, for use on other functions
-			return keyWord
+# 		elif mode == 1:		#returns the keyWord, for use on other functions
+# 			return keyWord
 		
-		elif mode == 2:		#returns boolean, can be useful
-			return True
+# 		elif mode == 2:		#returns boolean, can be useful
+# 			return True
 
-def searchDictNew(dictionary, mode, countries, countryCodes):
+def searchDict(dictionary, mode, countries, countryCodes):
 	found = False
 	#searches in the dictionary for the searchWord the user inputs
 	searchWord = raw_input("Which country are you looking for? Insert the name or the code:\n\n>")
@@ -91,7 +93,7 @@ def searchDictNew(dictionary, mode, countries, countryCodes):
 		return True
 
 def addValue(dictionary, countries, countryCodes):
-	word = searchDictNew(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
+	word = searchDict(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
 	years = []
 	values = dictionary.get(word)		#values for the keyWord
 	print("\n") 						#Aesthetic purposes
@@ -112,10 +114,10 @@ def addValue(dictionary, countries, countryCodes):
 		dictionary.update({word : values})			#updates the dictionary
 
 		#testing
-		print(values)
+		#print(values)
 
 def editValue(dictionary, countries, countryCodes):
-	word = searchDictNew(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
+	word = searchDict(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
 	years = []
 	values = dictionary.get(word)		#values for the keyWord
 	print("\n") 						#Aesthetic purposes
@@ -134,11 +136,11 @@ def editValue(dictionary, countries, countryCodes):
 			dictionary.update({word : values})		#updates the dictionary
 
 			#testing
-			print(values)
+			#print(values)
 			break									#stops the iteration, no need to continue (obvious, right?)
 
 def removeValue(dictionary, countries, countryCodes):
-	word = searchDictNew(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
+	word = searchDict(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
 	years = []
 	values = dictionary.get(word)		#values for the keyWord
 	print("\n") 						#Aesthetic purposes
@@ -155,16 +157,20 @@ def removeValue(dictionary, countries, countryCodes):
 			dictionary.update({word : values})		#updates the dictionary
 
 			#testing
-			print(values)
+			#print(values)
 			break									#stops the iteration, no need to continue (obvious, right?)
+
+def countriesWithData(countries, countryCodes):
+	print("Code -\tCountry Name")
+	for i in range(0, len(countries)):		#len(countries) == len(countryCodes)
+		print(countryCodes[i] + "\t" + countries[i])
 
 def printYearvalue(values):		#self explanatory, I think
 	print(str(values[0]) + " - " + values[1])	#"Year - Value"
 
+
 #Rembemer to remove this lines under
-#if __name__ == '__main__':
-	#dictionary = createDict()
-	#dictionaryNew, countries, countryCodes = createDictNew()
-	#removeValue(dictionaryNew, countries, countryCodes)
-	#searchDict(dictionary)
-	#removeValue(dictionary)
+if __name__ == '__main__':
+	dictionary, countries, countryCodes = createDict()
+	#removeValue(dictionary, countries, countryCodes)
+	countriesWithData(countries, countryCodes)
