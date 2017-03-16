@@ -85,7 +85,6 @@ def searchDictNew(dictionary, mode, countries, countryCodes):
 		return
 	
 	elif mode == 1 and found:		#returns the keyWord, for use on other functions
-		print('found')
 		return keyWord
 	
 	elif mode == 2 and found:		#returns boolean, can be useful
