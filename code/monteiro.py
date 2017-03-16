@@ -170,7 +170,7 @@ def printYearvalue(values):		#self explanatory, I think
 
 
 #Rembemer to remove this lines under
-if __name__ == '__main__':
-	dictionary, countries, countryCodes = createDict()
+#if __name__ == '__main__':
+	#dictionary, countries, countryCodes = createDict()
 	#removeValue(dictionary, countries, countryCodes)
-	countriesWithData(countries, countryCodes)
+	#countriesWithData(countries, countryCodes)
