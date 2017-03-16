@@ -163,7 +163,10 @@ def removeValue(dictionary, countries, countryCodes):
 def countriesWithData(countries, countryCodes):
 	print("Code -\tCountry Name")
 	for i in range(0, len(countries)):		#len(countries) == len(countryCodes)
-		print(countryCodes[i] + "\t" + countries[i])
+		print(countryCodes[i] + " - " + countries[i] + "\t\t\t\t"),
+		#remove the ',' above and following lines to print one country per line
+		if i % 2 == 0:
+			print
 
 def printYearvalue(values):		#self explanatory, I think
 	print(str(values[0]) + " - " + values[1])	#"Year - Value"
