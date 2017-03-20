@@ -61,12 +61,16 @@ class stackCountries:
 			if keyWord == self.peek().cName or keyWord == self.peek().cCode:
 				#do something
 				if op == 1:		#add values
-
+					
 					break
 
 				elif op == 2:	#edit values
-
-					break
+					#[DONE]
+					self.peek().displayInfo()
+					print("\nWhich year's value do you want to edit?")
+					year = input(">")
+					self.peek().editInfo(year)
+					break	
 
 				elif op == 3:	#remove one values
 
@@ -81,6 +85,7 @@ class stackCountries:
 					break
 
 				else:
+					self.peek().displayInfo()	#[REMOVE]debugging purpose only 
 					break
 
 			else:
@@ -111,16 +116,18 @@ class CountryNode:
 	def setYears(self, years):			#self explanatory
 		self.years = years
 
-	def displayInfo(self):
-		print(cName + '\t' + cCode)
-		for i in range(0, years.size()):
-			years.displayInfo()
+	def displayInfo(self):				#prints country name&code, and every year with it's information
+		print(self.cName + ' - ' + self.cCode)
+		self.years.displayInfo(stackYears())
+
+	def editInfo(self, year):				#is this really necessary?
+		self.years.editInfo(year)
 
 class stackYears:
 	def __init__(self):
 		self.items = []
 
-	def is_empty(self):
+	def is_ty(self):
 		return self.items == []
 
 	def push(self, item):
@@ -150,6 +157,22 @@ class stackYears:
 		for i in range(0, self.size()):
 			print(str(self.items[0][0]) + '\t' + str(self.items[0][1]) + '%')
 			stackAux.push(self.pop())
+		self.concatenate(stackAux)
+
+	def editInfo(self, year):
+		stackAux = stackYears()
+		for i in range(0, self.size()):
+			if int(year) == int(self.peek()[0]):
+				print("New value for the selected year? (" + str(year) + ")")
+				newValue = input(">")
+				self.pop()
+				self.push(tuple([int(year), int(newValue)]))
+				break
+			stackAux.push(self.pop())
+		print(self.peek())
+		self.concatenate(stackAux)
+			
+
 
 
 if __name__ == '__main__':
@@ -159,10 +182,10 @@ if __name__ == '__main__':
 	# print(stack.peek().cCode)
 	# print(stack.peek().years.peek())
 	
-	stack.search('PRT', 1)
-	print('\n')
+	stack.search('PRT', 2)
+	stack.search('PRT', 0)
 
 	#print(stack.peek().cName)
 	#print(stack.peek().cCode)
 	#print(stack.peek().years.peek())
-	print(stack.peek().years.displayInfo(stackYears()))
+	#print(stack.peek().years.displayInfo(stackYears()))
