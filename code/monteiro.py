@@ -61,7 +61,11 @@ class stackCountries:
 			if keyWord == self.peek().cName or keyWord == self.peek().cCode:
 				#do something
 				if op == 1:		#add values
-
+					#[]
+					self.peek().displayInfo()
+					print("\nWhich year do you want to add info about? The years above already have information, if you want to edit it, choose the 'edit value' option in the menu.")
+					year = input(">")
+					self.peek().addInfo(year)
 					break
 
 				elif op == 2:	#edit values
@@ -73,6 +77,7 @@ class stackCountries:
 					break	
 
 				elif op == 3:	#remove one value
+					#[DONE]
 					self.peek().displayInfo()
 					print("\nFrom which year do you want to remove information?")
 					year = input(">")
@@ -123,6 +128,9 @@ class CountryNode:
 		print('\n' + self.cName + ' - ' + self.cCode)
 		self.years.displayInfo(stackYears())
 
+	def addInfo(self, year):				#same as below
+		self.years.addInfo(year)
+
 	def editInfo(self, year):				#is this really necessary?
 		self.years.editInfo(year)
 
@@ -165,6 +173,22 @@ class stackYears:
 			stackAux.push(self.pop())
 		self.concatenate(stackAux)
 
+	def addInfo(self, year):
+		stackAux = stackYears()
+		for i in range(0, self.size()):
+			if int(year) == int(self.peek()[0]):
+				print("The year selected already has information, to edit choose 'edit info' in the menu.")
+				break
+			elif int(year) < int(self.peek()[0]):
+				print("What was the '%' of population with access to electricity in " + str(year))
+				newValue = input(">")
+				self.push(tuple([int(year), int(newValue)]))
+				break
+			else:
+				stackAux.push(self.pop())
+		self.concatenate(stackAux)
+
+
 	def editInfo(self, year):
 		stackAux = stackYears()
 		for i in range(0, self.size()):
@@ -174,7 +198,8 @@ class stackYears:
 				self.pop()
 				self.push(tuple([int(year), int(newValue)]))
 				break
-			stackAux.push(self.pop())
+			else:
+				stackAux.push(self.pop())
 		self.concatenate(stackAux)
 			
 	def removeInfo(self, year):
@@ -184,7 +209,8 @@ class stackYears:
 				self.pop()
 				print("\nData from the year " + str(year) + " successfully removed!\n")
 				break
-			stackAux.push(self.pop())
+			else:
+				stackAux.push(self.pop())
 		self.concatenate(stackAux)
 
 
@@ -197,6 +223,7 @@ if __name__ == '__main__':
 	
 	stack.search('PRT', 2)
 	stack.search('PRT', 3)
+	stack.search('PRT', 1)
 	stack.search('PRT', 0)
 
 	#print(stack.peek().cName)
