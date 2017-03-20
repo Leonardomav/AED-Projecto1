@@ -10,47 +10,82 @@ def loadCsvToArray():
 		countries = stackCountries()
 		iterator = 0
 		for row in reader:							#iterates the file
-			years = stackYears()	#iterates the row and gets the stuff that matters
+			years = stackYears()					#iterates the row and gets the stuff that matters
 
 			for i in range(2, len(row)):
 
 				if row[i] != '':
 					years.push(tuple([int(i + 1958), float(row[i])]))
-
+			years.invert(stackYears())
 			countries.push(CountryNode(row[0], row[1] , years))
 			if iterator == 0:
 				countries.pop()
 			iterator = 1
 	
 	file.close()									#closes the file since we don't need it open anymore
-	return countries									#returns the stack
+	return countries								#returns the stack
 
 class stackCountries:
 	def __init__(self):
 		self.items = []		#each item == CountryNode() 
 
-	def is_empty(self):
+	def is_empty(self):		#prof
 		return self.items == []
 	
-	def push(self, item):
+	def push(self, item):	#prof
 		self.items.insert(0, item)
 
-	def pop(self):
+	def pop(self):			#prof
 		return self.items.pop(0)
 
-	def peek(self):
+	def peek(self):			#prof
 		return self.items[0]
 
-	def size(self):
+	def size(self):			#prof
 		return len(self.items)
 
-	def invert(self, stackF): 	#stackF = Final (inverted)
-		if self.size() > 0:			#if stack is not empty
-			stackF.push(self.pop())	#ads to the aux stack the first elem of self
+	def invert(self, stackF): 			#stackF = Final (inverted)
+		if self.size() > 0:				#if stack is not empty
+			stackF.push(self.pop())		#ads to the aux stack the first elem of self
 			return self.invert(stackF)	#calls the function itself
 		else:
 			self.items = stackF.items
-			
+
+	def concatenate(self, stack):
+		for i in range(0, stack.size()):
+			self.push(stack.pop())
+
+	def search(self, keyWord, op):	#working
+		stackAux = stackCountries()
+		for i in range(0, self.size()):
+			if keyWord == self.peek().cName or keyWord == self.peek().cCode:
+				#do something
+				if op == 1:		#add values
+
+					break
+
+				elif op == 2:	#edit values
+
+					break
+
+				elif op == 3:	#remove one values
+
+					break
+
+				elif op == 4:	#remove all years
+					self.years = None
+					break
+
+				elif op == 5:	#delete country
+					deletedVal = self.pop()
+					break
+
+				else:
+					break
+
+			else:
+				stackAux.push(self.pop())
+		self.concatenate(stackAux)
 
 class CountryNode:
 	def __init__(self, cName = None, cCode = None, years = None):
@@ -76,6 +111,11 @@ class CountryNode:
 	def setYears(self, years):			#self explanatory
 		self.years = years
 
+	def displayInfo(self):
+		print(cName + '\t' + cCode)
+		for i in range(0, years.size()):
+			years.displayInfo()
+
 class stackYears:
 	def __init__(self):
 		self.items = []
@@ -95,9 +135,34 @@ class stackYears:
 	def size(self):
 		return len(self.items)
 
+	def invert(self, stackF): 			#stackF = Final (inverted)
+		if self.size() > 0:				#if stack is not empty
+			stackF.push(self.pop())		#ads to the aux stack the first elem of self
+			return self.invert(stackF)	#calls the function itself
+		else:
+			self.items = stackF.items
+
+	def concatenate(self, stack):
+		for i in range(0, stack.size()):
+			self.push(stack.pop())
+
+	def displayInfo(self, stackAux):
+		for i in range(0, self.size()):
+			print(str(self.items[0][0]) + '\t' + str(self.items[0][1]) + '%')
+			stackAux.push(self.pop())
+
+
 if __name__ == '__main__':
 	stack = loadCsvToArray()
 	stack.invert(stackCountries())
-	print(stack.peek().cName)
-	print(stack.peek().cCode)
-	print(stack.peek().years.peek())
+	# print(stack.peek().cName)
+	# print(stack.peek().cCode)
+	# print(stack.peek().years.peek())
+	
+	stack.search('PRT', 1)
+	print('\n')
+
+	#print(stack.peek().cName)
+	#print(stack.peek().cCode)
+	#print(stack.peek().years.peek())
+	print(stack.peek().years.displayInfo(stackYears()))
