@@ -7,185 +7,97 @@ def loadCsvToArray():
 	#loads the csv file into an array of arrays, 1
 	with open('dados.csv','r') as file: 			#opens the csv file
 		reader = csv.reader(file, dialect='AED')	
-		array = []									#structure to save the good stuff :^)
+		countries = stackCountries()
+		iterator = 0
 		for row in reader:							#iterates the file
-			array.append(row)						#appends a "line" of the '.csv' file, and adds it to the list 'Array'
+			years = stackYears()	#iterates the row and gets the stuff that matters
+
+			for i in range(2, len(row)):
+
+				if row[i] != '':
+					years.push(tuple([int(i + 1958), float(row[i])]))
+
+			countries.push(CountryNode(row[0], row[1] , years))
+			if iterator == 0:
+				countries.pop()
+			iterator = 1
 	
 	file.close()									#closes the file since we don't need it open anymore
-	return array									#returns the 'Array' so you can use it later
+	return countries									#returns the stack
 
-#deprecated
-# def createDict():
-# 	dictionary = {} 	#creates a new dictionary
-# 	origin = loadCsvToArray()	#array with the file
+class stackCountries:
+	def __init__(self):
+		self.items = []		#each item == CountryNode() 
 
-# 	for i in range(1, len(origin)):		#each country
-# 		data = []		#creates a list to put values in
-
-# 		for j in range(2, len(origin[i])):	#goes through the years & values
-
-# 			if origin[i][j] != '':		#if it's not blank
-# 				data.append([int(j + 1959), origin[i][j]]) #appends [year, value] to the key's Value array
-
-# 		dictionary.update({str(origin[i][1]) : data}) 		#key value = list of [date, value]
-
-# 	return dictionary
-
-def createDict():	#uses the 'new' keys
-	dictionary = {} 	#creates a new dictionary
-	origin = loadCsvToArray()	#array with the file
-	countries = []
-	countryCodes = []
-
-	for i in range(1, len(origin)):		#each country
-		data = []		#creates a list to put values in
-		key = str(origin[i][0] + ";" + origin[i][1])
-		countries.append(origin[i][0])		#country name list
-		countryCodes.append(origin[i][1])	#Country codes list
-
-		for j in range(2, len(origin[i])):	#goes through the years & values
-
-			if origin[i][j] != '':		#if it's not blank
-				data.append([int(j + 1959), origin[i][j]]) #appends [year, value] to the key's Value array
-
-		dictionary.update({key : data}) 		#key value = list of [date, value]
-
-	return (dictionary, countries, countryCodes)
-
-#deprecated
-# def searchDict(dictionary, mode):
-# 	#searches in the dictionary for the keyWord the user inputs
-# 	keyWord = raw_input("Which country are you looking for? Insert the code (e.g. AGO for Angola or PRT for Portugal)\n\n>")
-# 	#input ^ [TODO] protect it
-# 	if keyWord in dictionary.keys():	#if the keyWord == one of the keys
-# 		data = dictionary.get(keyWord)	#gets the value of the key (keyWord)
-# 		if mode == 0:	#default, returns nothing 
-# 			return
-		
-# 		elif mode == 1:		#returns the keyWord, for use on other functions
-# 			return keyWord
-		
-# 		elif mode == 2:		#returns boolean, can be useful
-# 			return True
-
-def searchDict(dictionary, mode, countries, countryCodes):
-	found = False
-	#searches in the dictionary for the searchWord the user inputs
-	searchWord = raw_input("Which country are you looking for? Insert the name or the code:\n\n>")
-	#input ^ [TODO] protect it
-	if searchWord in countries:	#if the searchWord == one of the keys
-		index = countries.index(searchWord)
-		keyWord = str(countries[index] + ";" + countryCodes[index])
-		found = True
-
-	elif searchWord in countryCodes:
-		index = countryCodes.index(searchWord)
-		keyWord = str(countries[index] + ";" + countryCodes[index])
-		found = True
-
-	if mode == 0 and found:			#default, returns nothing
-		return
+	def is_empty(self):
+		return self.items == []
 	
-	elif mode == 1 and found:		#returns the keyWord, for use on other functions
-		return keyWord
-	
-	elif mode == 2 and found:		#[TODO] prints the values of the country specified
-		return 
+	def push(self, item):
+		self.items.insert(0, item)
 
-def addValue(dictionary, countries, countryCodes):
-	word = searchDict(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
-	years = []
-	values = dictionary.get(word)		#values for the keyWord
-	print("\n") 						#Aesthetic purposes
-	for i in range(0, len(values)):
-		years.append(values[i][0])		#Creates a list with the years we have data on
+	def pop(self):
+		return self.items.pop(0)
 
-	yearToAdd = raw_input("\nWhich year do you want to add info about?\n\n>")
-	#[TODO] protect input ^
+	def peek(self):
+		return self.items[0]
 
-	if int(yearToAdd) in years:			#self explanatory IMO
-		print("\nYear already in the directory, if you want to edit it, select the 'edit' option")
+	def size(self):
+		return len(self.items)
 
-	else:
-		valueToAdd = raw_input("\nWhat's the value you want to add?\n\n>")		#[TODO]edit this
-		#[TODO] protect input ^
-		values.append([int(yearToAdd), valueToAdd])		#adds the new information to the values list
-		values = sorted(values, key = itemgetter(0))	#sorts the list of years/values
-		dictionary.update({word : values})			#updates the dictionary
+	def invert(self, stackF): 	#stackF = Final (inverted)
+		if self.size() > 0:			#if stack is not empty
+			stackF.push(self.pop())	#ads to the aux stack the first elem of self
+			return self.invert(stackF)	#calls the function itself
+		else:
+			self.items = stackF.items
+			
 
-		#testing
-		#print(values)
+class CountryNode:
+	def __init__(self, cName = None, cCode = None, years = None):
+		self.cName = cName 		#str -> e.g. 'Portugal'
+		self.cCode = cCode 		#str -> e.g. 'PRT'
+		self.years = years 		#class -> stackYears()
 
-def editValue(dictionary, countries, countryCodes):
-	word = searchDict(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
-	years = []
-	values = dictionary.get(word)		#values for the keyWord
-	print("\n") 						#Aesthetic purposes
-	print("Year - Value")
-	for i in range(0, len(values)):
-		printYearvalue(values[i])		#Prints existing data format: "Year - Value"
-		years.append(values[i][0])		#Creates a list with the years we have data on
+	def getCountryName(self):	#self explanatory
+		return self.cName
 
-	valueToEdit = raw_input("\nWhich year you want to edit?\n\n>")
-	#[TODO] protect input ^
+	def getCountryCode(self):	#self explanatory
+		return self.cCode
 
-	for i in range(0, len(values)):
-		if int(valueToEdit) == values[i][0]:		#needs to have the int() in order to work
-			newValue = raw_input("\nWhat should be the new value?\n\n>")	#asks for the new value
-			#[TODO] protect input ^
-			values[i][1] = newValue					#changes the value
-			dictionary.update({word : values})		#updates the dictionary
+	def getYears(self):			#set explanatory
+		return self.years
 
-			#testing
-			#print(values)
-			break									#stops the iteration, no need to continue (obvious, right?)
+	def setCountryName(self, cName):	#self explanatory
+		self.cName = cName
 
-def removeValue(dictionary, countries, countryCodes):
-	word = searchDict(dictionary, 1, countries, countryCodes) 	#keyWord -> dict key
-	years = []
-	values = dictionary.get(word)		#values for the keyWord
-	print("\n") 						#Aesthetic purposes
-	print("Year - Value")
-	for i in range(0, len(values)):
-		printYearvalue(values[i])		#Prints existing data format: "Year - Value"
-		years.append(values[i][0])		#Creates a list with the years we have data on
+	def setCountryCode(self, cCode):	#self explanatory
+		self.cCode = cCode
 
-	valueToRemove = raw_input("\nWhich year you want to remove?\n\n>")
-	#[TODO] protect input ^
+	def setYears(self, years):			#self explanatory
+		self.years = years
 
-	for i in range(0, len(values)):
-		if int(valueToRemove) == values[i][0]:		#needs to have the int() in order to work
-			values.pop(i)							#removes the specified year from the list
-			dictionary.update({word : values})		#updates the dictionary
+class stackYears:
+	def __init__(self):
+		self.items = []
 
-			#testing
-			#print(values)
-			break									#stops the iteration, no need to continue (obvious, right?)
+	def is_empty(self):
+		return self.items == []
 
-def countriesWithData(countries, countryCodes):		#prints every country and it's code
-	print("Code -\tCountry Name")
-	for i in range(0, len(countries)):		#len(countries) == len(countryCodes)
-		print(countryCodes[i] + " - " + countries[i] + "\t\t\t\t"),
-		#remove the ',' above and following lines to print one country per line
-		if i % 2 == 0:
-			print
+	def push(self, item):
+		self.items.insert(0, item)
 
-def showAllData(dictionary, countries, countryCodes):	#prints every country and the data we have on it
-	print("\n\n\n")
-	for i in range(0, len(countries)):		#len(countries) == len(countryCodes)
-		print(countries[i] + " ->\t"),
-		printYearvalueList(dictionary.get(countries[i] + ";" + countryCodes[i]))
-		print("\n\n")
+	def pop(self):
+		return self.items.pop(0)
 
-def printYearvalue(values):		#self explanatory, I think
-	print(str(values[0]) + " - " + values[1] + "\t"), 	#"Year - Value"
+	def peek(self):
+		return self.items[0]
 
-def printYearvalueList(values):
-	for i in range(0, len(values)):
-		print(str(values[i][0]) + " - " + values[i][1] + "\t\t"), 	#"Year - Value"
+	def size(self):
+		return len(self.items)
 
-#Rembemer to remove this lines under
-#if __name__ == '__main__':
-	#dictionary, countries, countryCodes = createDict()
-	#removeValue(dictionary, countries, countryCodes)
-	#countriesWithData(countries, countryCodes)
+if __name__ == '__main__':
+	stack = loadCsvToArray()
+	stack.invert(stackCountries())
+	print(stack.peek().cName)
+	print(stack.peek().cCode)
+	print(stack.peek().years.peek())
