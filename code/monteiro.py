@@ -61,7 +61,7 @@ class stackCountries:
 			if keyWord == self.peek().cName or keyWord == self.peek().cCode:
 				#do something
 				if op == 1:		#add values
-					#[]
+					#[DONE]
 					self.peek().displayInfo()
 					print("\nWhich year do you want to add info about? The years above already have information, if you want to edit it, choose the 'edit value' option in the menu.")
 					year = input(">")
@@ -85,10 +85,12 @@ class stackCountries:
 					break
 
 				elif op == 4:	#remove all years
+					#[DONE]?
 					self.years = None
 					break
 
 				elif op == 5:	#delete country
+					#[DONE]?
 					deletedVal = self.pop()
 					break
 
@@ -163,17 +165,17 @@ class stackYears:
 		else:
 			self.items = stackF.items
 
-	def concatenate(self, stack):
+	def concatenate(self, stack):		#joins 'stack' to self stack
 		for i in range(0, stack.size()):
 			self.push(stack.pop())
 
-	def displayInfo(self, stackAux):
+	def displayInfo(self, stackAux):	#prints every year/info pair
 		for i in range(0, self.size()):
 			print(str(self.items[0][0]) + '\t' + str(self.items[0][1]) + '%')
 			stackAux.push(self.pop())
 		self.concatenate(stackAux)
 
-	def addInfo(self, year):
+	def addInfo(self, year):			#adds a pair year/info
 		stackAux = stackYears()
 		for i in range(0, self.size()):
 			if int(year) == int(self.peek()[0]):
@@ -188,8 +190,7 @@ class stackYears:
 				stackAux.push(self.pop())
 		self.concatenate(stackAux)
 
-
-	def editInfo(self, year):
+	def editInfo(self, year):			#edits the value of a year/value pair
 		stackAux = stackYears()
 		for i in range(0, self.size()):
 			if int(year) == int(self.peek()[0]):
@@ -202,7 +203,7 @@ class stackYears:
 				stackAux.push(self.pop())
 		self.concatenate(stackAux)
 			
-	def removeInfo(self, year):
+	def removeInfo(self, year):			#removes a year/value pair
 		stackAux = stackYears()
 		for i in range(0, self.size()):
 			if int(year) == int(self.peek()[0]):
@@ -212,7 +213,6 @@ class stackYears:
 			else:
 				stackAux.push(self.pop())
 		self.concatenate(stackAux)
-
 
 if __name__ == '__main__':
 	stack = loadCsvToArray()
