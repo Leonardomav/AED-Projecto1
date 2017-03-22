@@ -181,11 +181,42 @@ class YearsList:
                 self.tail=self.head
             else:
                 current=self.head    
-                while(current.get_next() != None):
+                while current.get_next() != None and current.get_year() < year:
                     current = current.get_next()
-                current.set_next(YearNode(year, value, None, current))
-                self.tail = current.get_next()
-
+                    
+                
+                    
+                if current.get_prev() != None and current.get_next() != None:
+                    newNode = YearNode(year, value, current, current.get_prev())
+                    current.get_prev().set_next(newNode)
+                    current.set_prev(newNode)
+                    self.tail = current.get_next()
+                    
+                elif current.get_prev() == None and current.get_next() != None:
+                    newNode = YearNode(year, value, current, None)
+                    current.set_prev(newNode)
+                    self.head = newNode
+                    
+                elif current.get_prev() != None and current.get_next() == None:
+                    if current.get_year() < year:
+                        newNode = YearNode(year, value, None, current)
+                        current.set_next(newNode)
+                        self.tail = newNode
+                    else:
+                        newNode = YearNode(year, value, current, current.get_prev())
+                        current.get_prev().set_next(newNode)
+                        current.set_prev(newNode)
+                        
+                else: 
+                    if current.get_year() > year:
+                        newNode = YearNode(year, value, current, None)
+                        current.set_prev(newNode)
+                        self.head=newNode
+                    else:
+                        newNode = YearNode(year, value, None, current)
+                        current.set_next(newNode)
+                        self.tail=newNode                        
+                    
             return True
         else:
             return False
@@ -213,7 +244,7 @@ class YearsList:
         if currentNode == None:
             return None
 
-        while year != currentNode.get_year() and currentNode.get_next()!=None:
+        while year > currentNode.get_year() and currentNode.get_next()!=None:
             currentNode = currentNode.get_next()
 
         if year == currentNode.get_year():
@@ -329,7 +360,7 @@ def printAllCountries(ListCountries):
 #Used to ask the user for an input of country name / tag
 def pickCountry(ListCountries):
     printAllCountries(ListCountries)
-    countryPicked = input("What country do you want?\n> ") #" "
+    countryPicked = input("What country do you want?\n> ")
     countryNode = ListCountries.get_node_country(countryPicked)
     if countryNode != None and countryNode.get_years() != None:
         return countryNode.get_years()
@@ -355,7 +386,7 @@ def allYearsFromCountry(ListCountries):
     
 #Print a pylist with the values of all countrys of a given year
 def allCountryFromYear(ListCountries):
-    yearPicked = input("What year do you want?\n> ")
+    yearPicked = int(input("What year do you want?\n> "))
     l=[]
     currentNode = ListCountries.head
     while currentNode!=None:
@@ -374,7 +405,7 @@ def allCountryFromYear(ListCountries):
 def oneYearFromOneCoutry(ListCountries):
     countryPicked = pickCountry(ListCountries)
     if countryPicked != None:
-        yearPicked = input("What year do you want?\n> ")
+        yearPicked = int(input("What year do you want?\n> "))
         yearNode = countryPicked.get_node_year(yearPicked)
         if yearNode != None:
             print(countryPicked.get_node_year(yearPicked).get_data())
@@ -384,7 +415,7 @@ def oneYearFromOneCoutry(ListCountries):
 #Prints all the years from all the countries
 def allYearsFromAllCountries(ListCountries):
     currentNodeC = ListCountries.head
-    while currentNodeYearsListC!=None:
+    while currentNodeC!=None:
         l=[]
         currentNodeY = currentNodeC.get_years().head
         l.append(currentNodeC.get_country())
@@ -403,16 +434,16 @@ def allYearsFromAllCountries(ListCountries):
 def RangeOfDataOfOneCountry(ListCountries):
     Country = pickCountry(ListCountries)
     if Country!=None:
-        Min = input("Minimum Percentage:\n> ")
-        Max = input("Maximum Percentage:\n> ")
+        Min = float(input("Minimum Percentage:\n> "))
+        Max = float(input("Maximum Percentage:\n> "))
         print(Country.get_node_range(Min, Max))
         
 #if it exists, edits one year of a country
 def editYearOfACountry(ListCountries):
     Country = pickCountry(ListCountries)
     if Country != None:
-        yearPicked = input("What year do you want to edit?\n> ")
-        newYear = input("What year do you want to insert?\n> ")
+        yearPicked = int(input("What year do you want to edit?\n> "))
+        newYear = int(input("What year do you want to insert?\n> "))
         checker = Country.edit_year(yearPicked, newYear)
         checkBool(checker)
          
@@ -420,8 +451,8 @@ def editYearOfACountry(ListCountries):
 def editValueOfAYear(ListCountries):
     Country = pickCountry(ListCountries)
     if Country != None:
-        yearPicked = input("What year do you want to edit?\n> ")
-        newValue = input("What value do you want to insert?\n> ")
+        yearPicked = int(input("What year do you want to edit?\n> "))
+        newValue = float(input("What value do you want to insert?\n> "))
         checker = Country.edit_value(yearPicked, newValue)
         checkBool(checker)
     
@@ -436,10 +467,11 @@ def removeCountry(ListCountries):
 def removeYearFromCountry(ListCountries):
     country = pickCountry(ListCountries)
     if country != None:
-        yearPicked = input("What year do you want to remove?\n> ")
+        yearPicked = int(input("What year do you want to remove?\n> "))
         checker = country.remove_year(yearPicked)
         checkBool(checker)
-            
+           
+#Add a country with year->none 
 def addCountry(ListCountries):
     countryName = input("Name of the country:\n> ")
     countryTAG = input("TAG of the country:\n> ")
@@ -449,10 +481,11 @@ def addCountry(ListCountries):
     checker = ListCountries.add_country(country)
     checkBool(checker) 
     
+#add year to a country
 def addYearToCountry(ListCountries):
     countryName = input("Name or TAG of the country:\n> ")
-    year = input("Year you want to add:\n> ")
-    value = input("Percentage you want to add:\n> ")
+    year = int(input("Year you want to add:\n> "))
+    value = float(input("Percentage you want to add:\n> "))
     countryNode = ListCountries.get_node_country(countryName)
     if countryNode.get_years() != None:
         checker = countryNode.get_years().add_year(year, value)
@@ -465,28 +498,6 @@ def addYearToCountry(ListCountries):
     else:
         print("Country does not exist...\n")
     
-
-ListCountries = loadCsvToArray();
-#allYearsFromCountry(ListCountries)
-#allCountryFromYear(ListCountries)
-#oneYearFromOneCoutry(ListCountries)
-#allYearsFromAllCountries(ListCountries)
-#RangeOfDataOfOneCountry(ListCountries)
-#editYearOfACountry(ListCountries)
-#removeCountry(ListCountries)
-#removeYearFromCountry(ListCountries)
-#addCountry(ListCountries)
-
-
-#addYearToCountry(ListCountries)
-#allYearsFromCountry(ListCountries)
-addCountry(ListCountries)
-allYearsFromCountry(ListCountries)
-addYearToCountry(ListCountries)
-allYearsFromCountry(ListCountries)
-removeYearFromCountry(ListCountries)
-allYearsFromCountry(ListCountries)
-
 
 
 
