@@ -3,71 +3,45 @@ import leo as leo
 import sopas as sopas
 
 def loadStructures():		#loads the structures to be used in the program
-	leonardo = '@leo'
-	s0pas = '@sopas'
-	return [monteiro.createDict(), leonardo, s0pas]		#change later to work properly
+	DoubleLinkedLists = leo.loadCsvToArray()
+	#the rest of the loads here..
+	sopas = "AVL" #chage this for the load
+
+	return [monteiro.createDict(), DoubleLinkedLists, sopas]
 
 def main():
-	mont, leon, sopa = loadStructures()
+	mont, countriesList, sopa = loadStructures()
 
-	#@JMSMonteiro strut needs some more "fine tuning", not necessary if functions are properly made
+	choice=menuDataStrut()
+
+	menu(mont, countriesList, sopa, choice)
 	
 
-	#@Leonardomav
-
-	#JAfonsoS0pas
-
-	#continue coding
-	menuDataStrut(mont, leon, sopa)
-	return
-
-def menuDataStrut(mont, leon, sopa):
-	print("Which one of the following data structure you want want to use?")
-	print
+def menuDataStrut():
+	print("Which one of the following data structure you want want to use?\n")
 	print("1 - Dictionaries")
-	print("2 - @Leo Strut")
+	print("2 - DoubleLinkedLists of DoubleLinkedLists")
 	print("3 - @Sopas Strut")
-	choice = raw_input(">")
-	#[TODO] protect input ^
+	structPicked= int(input("> "))
+	
+	return 
 
-	if choice == '1':
-		#Run Function 
-		menuMont(mont)
-		return
-	elif choice == '2':
-		#Run Function 2
-		return
-	elif choice == '3':
-		#Run Function3
-		return
+def menu(mont, countriesList, sopa, structPicked):
+	print("\n\t\t#-#-#-#-#-#MENU#-#-#-#-#-#")
+	print("1  - Search all the years with available information of one country;")
+	print("2  - Search all the countries information of one year;")
+	print("3  - Search one year information of one country;")
+	print("4  - Search all the years of all the countries;")
+	print("5  - Search a range of percentages of one country;")
+	print("6  - Edit year of a country;")
+	print("7  - Edit year respective percentage of a country;")
+	print("8  - Remove one country;")
+	print("9  - Remove one year of one country;")
+	print("10 - Add one country;")
+	print("11 - Add one pair [Year, Percentage] to a country;")
+	choice = int(input("> "))
 
-def menuMont(mont):
-	#@JMSMonteiro's strut needs some more "fine tuning", not 100% needed, but useful
-	montDict = mont[0]		#dictionary
-	montCountry = mont[1]	#country list
-	montCodes = mont[2]		#country code list
 
-	#monteiro.showAllData(montDict, montCountry, montCodes)
-
-	print("What do you want to do with this data structure?")
-	print
-	print("1 - Add a new value to a year we have no info about")	#[TODO]
-	print("2 - Edit an existing value")								#[TODO]
-	print("3 - Remove an existing value from a specific year")		#[TODO]
-	print("4 - Show existing data about every country")				#[TODO]
-	print("5 - Show existing data about a specific country")		#[TODO]
-
-	choice = raw_input(">")
-	if choice == '1':
-		return
-	elif choice == '2':
-		return
-	elif choice == '3':
-		return
-	elif choice == '4':
-		return
-	elif choice == '5':
- 		return
 
 if __name__ == '__main__': 		
 	main()
