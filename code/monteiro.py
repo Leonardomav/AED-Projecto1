@@ -67,6 +67,11 @@ class stackCountries:
 	def size(self):			#prof
 		return len(self.items)
 
+	def addCountry(self):
+		cName = input('Name of the country to insert:\n>')
+		cCode = input('Country code (MAX 3 char):\n>')
+		self.push(CountryNode(cName, cCode, stackYears()))	
+
 	def invert(self, stackF): 			#stackF = Final (inverted)
 		if self.size() > 0:				#if stack is not empty
 			stackF.push(self.pop())		#ads to the aux stack the first elem of self
@@ -240,6 +245,7 @@ class stackYears:
 if __name__ == '__main__':
 	stack = loadCsvToArray()
 	stack.invert(stackCountries())
+	#stack.addCountry()
 	#print(stack.peek().cName)
 	#print(stack.peek().cCode)
 	#print(stack.peek().years.peek())
@@ -254,4 +260,4 @@ if __name__ == '__main__':
 	#print(stack.peek().years.peek())
 	#print(stack.peek().years.displayInfo(stackYears()))
 
-	saveStrutToCSV(stack)
+	#saveStrutToCSV(stack)
