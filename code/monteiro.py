@@ -25,6 +25,29 @@ def loadCsvToArray():
 	file.close()									#closes the file since we don't need it open anymore
 	return countries								#returns the stack
 
+def saveStrutToCSV(stack):
+	with open('montDados.csv', 'w') as file:
+		#write first row (country name, c code, years)
+		file.write('"Country Name"' + ';' + '"Country Code"')
+		for i in range(1960, 2017):					#writes the first line
+			file.write(';"' + str(i) + '"')
+
+
+		for i in range(0, stack.size()):			#writes all the data on the stack to the file
+			file.write('\n')
+			node = stack.pop()
+			file.write('"' + node.cName + '";"' + node.cCode + '"')
+			years = node.years
+
+			for i in range(1960, 2017):
+				file.write(';')
+				if years.size() > 0:
+					if i == int(years.peek()[0]):
+						year = years.pop()
+						file.write('"' + str(year[1]) + '"')
+
+	return
+
 class stackCountries:
 	def __init__(self):
 		self.items = []		#each item == CountryNode() 
@@ -184,7 +207,7 @@ class stackYears:
 			elif int(year) < int(self.peek()[0]):
 				print("What was the '%' of population with access to electricity in " + str(year))
 				newValue = input(">")
-				self.push(tuple([int(year), int(newValue)]))
+				self.push(tuple([int(year), flaot(newValue)]))
 				break
 			else:
 				stackAux.push(self.pop())
@@ -197,7 +220,7 @@ class stackYears:
 				print("\nNew value for the selected year? (" + str(year) + ")")
 				newValue = input(">")
 				self.pop()
-				self.push(tuple([int(year), int(newValue)]))
+				self.push(tuple([int(year), float(newValue)]))
 				break
 			else:
 				stackAux.push(self.pop())
@@ -217,16 +240,18 @@ class stackYears:
 if __name__ == '__main__':
 	stack = loadCsvToArray()
 	stack.invert(stackCountries())
-	# print(stack.peek().cName)
-	# print(stack.peek().cCode)
-	# print(stack.peek().years.peek())
+	#print(stack.peek().cName)
+	#print(stack.peek().cCode)
+	#print(stack.peek().years.peek())
 	
-	stack.search('PRT', 2)
-	stack.search('PRT', 3)
-	stack.search('PRT', 1)
-	stack.search('PRT', 0)
+	#stack.search('PRT', 2)	#edit
+	#stack.search('PRT', 3)	#remove
+	#stack.search('PRT', 1)	#add
+	#stack.search('PRT', 0)	#just print to see info
 
 	#print(stack.peek().cName)
 	#print(stack.peek().cCode)
 	#print(stack.peek().years.peek())
 	#print(stack.peek().years.displayInfo(stackYears()))
+
+	saveStrutToCSV(stack)
