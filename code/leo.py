@@ -1,3 +1,5 @@
+import csv
+
 class CountryNode:
     def __init__(self, country = None, years = None,  next = None, prev = None):
         self.country = country
@@ -73,11 +75,11 @@ class CountryList:
 
     #check if empty
     def is_empty(self):
-        return self.head == None
+        return self.head == None    
 
-    #add country do the end of the list {country -> []}
+    #add country to the end of the list {country -> []}
     def add_country(self, country):
-        if self.get_node_country(country[1])==None:
+        if self.get_node_country(country[1])==None and self.get_node_country(country[0])==None:
             if (self.head == None):
                 self.head = CountryNode(country)
                 self.tail=self.head
@@ -226,17 +228,23 @@ class YearsList:
 
         while currentNode!=None:
             if currentNode.get_data() >= min and currentNode.get_data() <= max:
-                nodelist.append(currentNode.get_year())
+                laux=[]
+                laux.append(currentNode.get_year())
+                laux.append(currentNode.get_data())
+                nodelist.append(laux)
             currentNode = currentNode.get_next()
 
         return nodelist
 
     #chages year to yearnew
     def edit_year(self, yearold, yearnew):
-        node = self.get_node_year(yearold)
-        if node!= None:
-            node.set_year(yearnew)
-            return True
+        if self.get_node_year(yearnew)==None:
+            node = self.get_node_year(yearold)
+            if node!= None:
+                node.set_year(yearnew)
+                return True
+            else:
+                return False
         else:
             return False
 
@@ -263,7 +271,7 @@ class YearsList:
                 temp.get_prev().set_next(None)
             else:
                 temp.get_prev().set_next(temp.get_next())
-                temp.get_next().set_prev(temp.get_prev())            
+                temp.YearsListget_next().set_prev(temp.get_prev())            
                 
             temp.set_prev(None)
             temp.set_next(None)
@@ -277,4 +285,209 @@ class YearsList:
 
 
 #------------------------------------------------------------------
+
+csv.register_dialect('AED', delimiter=';') #registers a new dialect, separated with ";", instead of the default ","
+
+#loads the csv file to @Leo struct
+def loadCsvToArray():
+    #loads the csv file into an array of arrays, 1
+    with open('dados.csv','r') as file: 			
+        reader = csv.reader(file, dialect='AED')	
+        countries = CountryList()
+        iterator = 0
+        for row in reader:
+            if iterator == 0:
+                iterator = 1
+            else:
+                years = YearsList()
+    
+                for i in range(2, len(row)):
+                    if row[i] != '':
+                        years.add_year(int(i + 1958), float(row[i]))
+                        
+                countries.add_country([row[0], row[1]])
+                countries.add_years(years, row[1])
+
+    file.close()
+    return countries
+
+def checkBool(check):
+    if check:
+        print("Done...\n")
+    else:
+        print("Error...\n")    
+
+#Given the main double linked list prints an array with all the pair Country name / TAG
+def printAllCountries(ListCountries):
+    l=[]
+    currentNode = ListCountries.head
+    while currentNode!=None:
+        l.append(currentNode.get_country())
+        currentNode = currentNode.get_next()
+    print(l)
+
+#Used to ask the user for an input of country name / tag
+def pickCountry(ListCountries):
+    printAllCountries(ListCountries)
+    countryPicked = input("What country do you want?\n> ") #" "
+    countryNode = ListCountries.get_node_country(countryPicked)
+    if countryNode != None and countryNode.get_years() != None:
+        return countryNode.get_years()
+    else:
+        print("Country does not exist or has no information available...\n")
+        return None
+    
+#Main function to print all the years with values from a given country
+def allYearsFromCountry(ListCountries):
+    country=pickCountry(ListCountries)
+    if country != None:
+        l=[]
+        currentNode = country.head
+        while currentNode!=None:
+            laux=[]
+            laux.append(currentNode.get_year())
+            laux.append(currentNode.get_data())
+            l.append(laux)    
+            
+            currentNode = currentNode.get_next()
+    
+        print(l)
+    
+#Print a pylist with the values of all countrys of a given year
+def allCountryFromYear(ListCountries):
+    yearPicked = input("What year do you want?\n> ")
+    l=[]
+    currentNode = ListCountries.head
+    while currentNode!=None:
+        laux=[]
+        value = currentNode.get_years().get_node_year(yearPicked)
+        laux.append(currentNode.get_country_name())
+        if value!=None:
+            laux.append(value.get_data())
+        else:
+            laux.append("No Data Available")
+        l.append(laux)
+        currentNode = currentNode.get_next()
+    print(l)
+
+#Prints the value of one year of one given country
+def oneYearFromOneCoutry(ListCountries):
+    countryPicked = pickCountry(ListCountries)
+    if countryPicked != None:
+        yearPicked = input("What year do you want?\n> ")
+        yearNode = countryPicked.get_node_year(yearPicked)
+        if yearNode != None:
+            print(countryPicked.get_node_year(yearPicked).get_data())
+        else: 
+            print("No Data Available\n")
+    
+#Prints all the years from all the countries
+def allYearsFromAllCountries(ListCountries):
+    currentNodeC = ListCountries.head
+    while currentNodeYearsListC!=None:
+        l=[]
+        currentNodeY = currentNodeC.get_years().head
+        l.append(currentNodeC.get_country())
+        while currentNodeY!=None:
+            laux=[]
+            laux.append(currentNodeY.get_year())
+            laux.append(currentNodeY.get_data())
+            l.append(laux)    
+        
+            currentNodeY = currentNodeY.get_next()
+            
+        print(l)
+        currentNodeC = currentNodeC.get_next()
+        
+#Prints the values and respective years from a certain country between a given range of percentages
+def RangeOfDataOfOneCountry(ListCountries):
+    Country = pickCountry(ListCountries)
+    if Country!=None:
+        Min = input("Minimum Percentage:\n> ")
+        Max = input("Maximum Percentage:\n> ")
+        print(Country.get_node_range(Min, Max))
+        
+#if it exists, edits one year of a country
+def editYearOfACountry(ListCountries):
+    Country = pickCountry(ListCountries)
+    if Country != None:
+        yearPicked = input("What year do you want to edit?\n> ")
+        newYear = input("What year do you want to insert?\n> ")
+        checker = Country.edit_year(yearPicked, newYear)
+        checkBool(checker)
+         
+#if it exists, edits the value of one year of a country
+def editValueOfAYear(ListCountries):
+    Country = pickCountry(ListCountries)
+    if Country != None:
+        yearPicked = input("What year do you want to edit?\n> ")
+        newValue = input("What value do you want to insert?\n> ")
+        checker = Country.edit_value(yearPicked, newValue)
+        checkBool(checker)
+    
+#Remove completly one country
+def removeCountry(ListCountries):
+    printAllCountries(ListCountries)
+    Country = input("What country do you want to remove?\n> ")
+    checker = ListCountries.remove_country(Country)
+    checkBool(checker)
+    
+#Remove avalable info for one year of one country
+def removeYearFromCountry(ListCountries):
+    country = pickCountry(ListCountries)
+    if country != None:
+        yearPicked = input("What year do you want to remove?\n> ")
+        checker = country.remove_year(yearPicked)
+        checkBool(checker)
+            
+def addCountry(ListCountries):
+    countryName = input("Name of the country:\n> ")
+    countryTAG = input("TAG of the country:\n> ")
+    country = []
+    country.append(countryName)
+    country.append(countryTAG)
+    checker = ListCountries.add_country(country)
+    checkBool(checker) 
+    
+def addYearToCountry(ListCountries):
+    countryName = input("Name or TAG of the country:\n> ")
+    year = input("Year you want to add:\n> ")
+    value = input("Percentage you want to add:\n> ")
+    countryNode = ListCountries.get_node_country(countryName)
+    if countryNode.get_years() != None:
+        checker = countryNode.get_years().add_year(year, value)
+        checkBool(checker)
+    elif countryNode != None:
+        listYears = YearsList()
+        listYears.add_year(year, value)
+        checker = ListCountries.add_years(listYears, countryNode.get_country_tag())
+        checkBool(checker)
+    else:
+        print("Country does not exist...\n")
+    
+
+ListCountries = loadCsvToArray();
+#allYearsFromCountry(ListCountries)
+#allCountryFromYear(ListCountries)
+#oneYearFromOneCoutry(ListCountries)
+#allYearsFromAllCountries(ListCountries)
+#RangeOfDataOfOneCountry(ListCountries)
+#editYearOfACountry(ListCountries)
+#removeCountry(ListCountries)
+#removeYearFromCountry(ListCountries)
+#addCountry(ListCountries)
+
+
+#addYearToCountry(ListCountries)
+#allYearsFromCountry(ListCountries)
+addCountry(ListCountries)
+allYearsFromCountry(ListCountries)
+addYearToCountry(ListCountries)
+allYearsFromCountry(ListCountries)
+removeYearFromCountry(ListCountries)
+allYearsFromCountry(ListCountries)
+
+
+
+
 
