@@ -35,16 +35,16 @@ def saveStrutToCSV(stack):
 
 		for i in range(0, stack.size()):			#writes all the data on the stack to the file
 			file.write('\n')
-			node = stack.pop()
-			file.write('"' + node.cName + '";"' + node.cCode + '"')
-			years = node.years
+			node = stack.pop()						#node (cname, ccode, years stack)
+			file.write('"' + node.cName + '";"' + node.cCode + '"')	
+			years = node.years 						#years = stack
 
-			for i in range(1960, 2017):
+			for i in range(1960, 2017):				#years we have info on
 				file.write(';')
-				if years.size() > 0:
+				if years.size() > 0:				#if the stack isn't empty (to avoid error when peek() is used)
 					if i == int(years.peek()[0]):
-						year = years.pop()
-						file.write('"' + str(year[1]) + '"')
+						year = years.pop()			#pops the element
+						file.write('"' + str(year[1]) + '"')	#adds it to the file
 
 	return
 
