@@ -11,7 +11,7 @@ class countryNode():
     def __init__(self, country, tag, years):
         self.country = country
         self.tag = tag
-        self.years = AVLTreeData()
+        self.years = years
         self.left = None 
         self.right = None 
 
@@ -25,7 +25,7 @@ class countryNode():
     def getYears(self):
         return self.years
 
-    def setYears(years):
+    def setYears(self,years):
         self.years=years
 
     def getLeft(self):
@@ -44,20 +44,23 @@ class yearNode:
         self.left = None
         self.right = None
 
-    def get_year(self):
+    def getYear(self):
         return self.year
 
-    def get_data(self):
+    def getData(self):
         return self.data
 
-    def get_right(self):
+    def getRight(self):
         return self.right
 
-    def get_left(self):
+    def getLeft(self):
         return self.left
 
-    def set_data(self, data):
+    def setData(self, data):
         self.data = data
+
+    def setYear(self, year):
+        self.year=year
 
 
 
@@ -78,7 +81,21 @@ class AVLTreeData():
             return 0 
     
     def is_leaf(self):
-        return (self.height == 0) 
+        return (self.height == 0)
+
+    def display(self, level=0, pref=''):
+        '''
+        Display the whole tree. Uses recursive def.
+        TODO: create a better display using breadth-first search
+        '''
+        self.update_heights()  # Must update heights before balances
+        self.update_balances()
+        if(self.node != None):
+            print ('-' * level * 2, pref, self.node.getYear(),",",self.node.getData())
+            if self.node.left != None:
+                self.node.left.display(level + 1, '<')
+            if self.node.left != None:
+                self.node.right.display(level + 1, '>')
 
 
 
@@ -104,15 +121,17 @@ class AVLTreeData():
             
         self.rebalance()
 
-    def yearSearch(year):
-        if tree.year == year:           
-            return self.node
-        
-        elif country < tree.country: 
-            self.node.left.YearSearch(year)
-            
-        elif country > tree.country: 
-            self.node.right.YearSearch(year)
+    def yearSearch(self,year):
+        tree=self.node
+        if tree:
+            if tree.getYear() == year:
+                return tree
+
+            elif year < tree.getYear():
+                return self.node.left.yearSearch(year)
+
+            elif year > tree.getYear():
+                return self.node.right.yearSearch(year)
 
         
     def rebalance(self):
@@ -313,10 +332,10 @@ class AVLTreeCountry():
             self.node.right = AVLTreeCountry()
             debug("Inserted key [" + str(country) + "]")
         
-        elif country < tree.country: 
+        elif country < tree.getCountry():
             self.node.left.insertCountry(country, tag, years)
             
-        elif country > tree.country: 
+        elif country > tree.getCountry():
             self.node.right.insertCountry(country, tag, years)
         
         else: 
@@ -333,34 +352,35 @@ class AVLTreeCountry():
         self.update_heights()  # Must update heights before balances 
         self.update_balances()
         if(self.node != None): 
-            print ('-' * level * 2, pref, self.node.country, "[" + str(self.height) + ":" + str(self.balance) + "]", 'L' if self.is_leaf() else ' ')
+            print ('-' * level * 2, pref, self.node.getCountry(),self.node.getYears().display(), "[" + str(self.height) + ":" + str(self.balance) + "]", 'L' if self.is_leaf() else ' ')
             if self.node.left != None: 
                 self.node.left.display(level + 1, '<')
             if self.node.left != None:
                 self.node.right.display(level + 1, '>')
                 
 
-    def CountrySearch(self,country):
+    def countrySearch(self,country):
         tree = self.node
-        if tree.country == country:
+
+        if tree.getCountry() == country:
             return tree
         
-        elif country < tree.country: 
-            self.node.left.CountrySearch(country)
+        elif country < tree.getCountry():
+            return self.node.left.countrySearch(country)
             
-        elif country > tree.country: 
-            self.node.right.CountrySearch(country)
+        elif country > tree.getCountry():
+            return self.node.right.countrySearch(country)
 
 
-    def searchYears(self,year,res={}):
+    def searchYears(self,year):
         tree = self.node
-        if tree.years.node.searchYear(year):
-            dicAux={self.node.year,self.node.value}
-            res.update(dicAux)
-            return res
-        tree.left.searchYears(year,res)
-        tree.right.searchYears(year,res)
-
+        if self.node!=None:
+            if tree.getYears().yearSearch(year):
+                print(tree.getCountry(),";",tree.getYears().yearSearch(year).getData())
+            if self.node.getLeft() != None:
+                tree.getLeft().searchYears(year)
+            if self.node.getRight() != None:
+                tree.getRight().searchYears(year)
 
     def rebalance(self):
         ''' 

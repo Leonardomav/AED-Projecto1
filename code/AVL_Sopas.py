@@ -17,9 +17,8 @@ def load():
 		reader = csv.reader(file ,dialect = 'AED')
 		for row in reader:
 			years=AVLTreeData()
-			i=2
 			for i in range(len(row)):
-				if row[i] != '':
+				if row[i] != '' and i!=0 and i!=1:
 					years.insertYears(startingYear+(i-2),row[i])
 			arvorePais.insertCountry(row[0],row[1],years)
 	file.close()
@@ -33,7 +32,7 @@ def loadToDict():
 
 def tagSearch(tag):
 	if tag in dicioPais:
-		node=arvorePais.CountrySearch(dicioPais.get(tag))
+		node=arvorePais.countrySearch(dicioPais.get(tag))
 		print(node)
 	else:
 		print("Error: Tag does not exist!")
@@ -42,57 +41,54 @@ def tagSearch(tag):
 
 load()
 loadToDict()
-arvorePais.display()
-print(arvorePais.CountrySearch("Portugal"))
-
-#arvorePais.searchYears(1960)
-
-
-def menu():
-	load()
-	loadToDict()
-	menu=True
-	while menu:
-		print("1 - Search for a Country (by name) in the tree\n")
-		print("2 - Search for a Country (by tag) in the tree\n")
-		print("3 - Search for a Year in the tree\n")
-		print("4 - Edit year\n")
-		print("5 - Edit Country\n\nChoice: ")
-		print("6 - Insert Country\n")
-		print("7 - Delete Country\n")
-		print("8 - Insert [year,value]")
-		print("0 - Exit")
-		choice = input()
-
-		if choice == 1:
-			string = input("Which Country are you looking for? ")
-			arvorePais.CountrySearch(string)
-
-		elif choice == 2:
-			string = input("Which country's tag are you looking for? ")
-			tagSearch(string)
-		#elif choice == 3:
-			#to be completed
-		elif choice == 4:
-			string = input("Which year would you like to edit? ")
-			#to be completed
-		elif choice == 5:
-			string = input("Which country would you like to edit? ")
-			node=arvorePais.CountrySearch(string)
-			print("What would you like to edit?\n1 - Name\n2 - Tag\n3 - Year")
-			choice2 = input("Choice: ")
-			if choice2 == 1:
-				string = input("Insert new name: ")
-				node.country=string
-			elif choice2 == 2:
-				string = input("Insert new tag: ")
-				node.tag = string
-			#elif choice2 == 3: 
-				#to be competed
-		#elif choice == 0:
-			#menu = False
-		else:
-			print("Invalid input")
 
 
 
+def dataOfCountry(country):
+	node=arvorePais.countrySearch(country)
+	node.getYears().display()
+
+def valuesOfYear(year):
+	tree=arvorePais.searchYears(year)
+
+def searchSpecific(country,year):
+	node = arvorePais.countrySearch(country)
+	if node.getYears().yearSearch(year) != None:
+		print(node.getYears().yearSearch(year).getData())
+
+def printAll():
+	arvorePais.display()
+
+#def getNodeRange(country,min,max)
+#	node = arvorePais.countrySearch(country)
+#	if node.getYears().getValues()
+
+def editYear(country, year, newYear):
+	node = arvorePais.countrySearch(country)
+	if node.getYears().yearSearch(year) != None:
+		node.getYears().yearSearch(year).setYear(newYear)
+
+def editDara(country,year, newData):
+	node = arvorePais.countrySearch(country)
+	if node.getYears().yearSearch(year) != None:
+		node.getYears().yearSearch(year).setData(newData)
+
+def deleteCountry(country):
+	arvorePais.delete(country)
+
+def deleteYear(country, year):
+	node = arvorePais.countrySearch(country)
+	if node.getYears().yearSearch(year) != None:
+		node.getYears().delete(year)
+
+def addYears(country,year, data):
+	node=arvorePais.countrySearch(country)
+	node.insertYears(year,data)
+
+def addCountry(country, tag, years):
+	arvorePais.insertCountry(country, tag, years)
+
+#dataOfCountry("Portugal")
+#valuesOfYear(2000)
+#searchSpecific("Portugal",2000)
+#printAll()
