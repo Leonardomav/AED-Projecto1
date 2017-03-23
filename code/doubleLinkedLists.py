@@ -344,6 +344,27 @@ def loadCsvToArray():
     file.close()
     return countries
 
+def inputInt(string):
+    while True:
+        try:
+            num = int(input(string))
+        except ValueError:
+            print("Error... Please try again...")
+            continue
+        else:
+            return num
+
+def inputFloat(string):
+    while True:
+        try:
+            num = float(input(string))
+        except ValueError:
+            print("Error... Please try again...")
+            continue
+        else:
+            return num
+
+
 def checkBool(check):
     if check:
         print("Done...\n")
@@ -388,7 +409,7 @@ def allYearsFromCountry(ListCountries):
     
 #Print a pylist with the values of all countrys of a given year
 def allCountryFromYear(ListCountries):
-    yearPicked = int(input("What year do you want?\n> "))
+    yearPicked = inputInt("What year do you want?\n> ")
     l=[]
     currentNode = ListCountries.head
     while currentNode!=None:
@@ -407,7 +428,7 @@ def allCountryFromYear(ListCountries):
 def oneYearFromOneCoutry(ListCountries):
     countryPicked = pickCountry(ListCountries)
     if countryPicked != None:
-        yearPicked = int(input("What year do you want?\n> "))
+        yearPicked = inputInt("What year do you want?\n> ")
         yearNode = countryPicked.get_node_year(yearPicked)
         if yearNode != None:
             print(countryPicked.get_node_year(yearPicked).get_data())
@@ -436,16 +457,16 @@ def allYearsFromAllCountries(ListCountries):
 def RangeOfDataOfOneCountry(ListCountries):
     Country = pickCountry(ListCountries)
     if Country!=None:
-        Min = float(input("Minimum Percentage:\n> "))
-        Max = float(input("Maximum Percentage:\n> "))
+        Min = inputFloat("Minimum Percentage:\n> ")
+        Max = inputFloat("Maximum Percentage:\n> ")
         print(Country.get_node_range(Min, Max))
         
 #if it exists, edits one year of a country
 def editYearOfACountry(ListCountries):
     Country = pickCountry(ListCountries)
     if Country != None:
-        yearPicked = int(input("What year do you want to edit?\n> "))
-        newYear = int(input("What year do you want to insert?\n> "))
+        yearPicked = inputInt("What year do you want to edit?\n> ")
+        newYear = inputInt("What year do you want to insert?\n> ")
         checker = Country.edit_year(yearPicked, newYear)
         checkBool(checker)
          
@@ -453,8 +474,8 @@ def editYearOfACountry(ListCountries):
 def editValueOfAYear(ListCountries):
     Country = pickCountry(ListCountries)
     if Country != None:
-        yearPicked = int(input("What year do you want to edit?\n> "))
-        newValue = float(input("What value do you want to insert?\n> "))
+        yearPicked = inputInt("What year do you want to edit?\n> ")
+        newValue = inputFloat("What value do you want to insert?\n> ")
         checker = Country.edit_value(yearPicked, newValue)
         checkBool(checker)
     
@@ -469,7 +490,7 @@ def removeCountry(ListCountries):
 def removeYearFromCountry(ListCountries):
     country = pickCountry(ListCountries)
     if country != None:
-        yearPicked = int(input("What year do you want to remove?\n> "))
+        yearPicked = inputInt("What year do you want to remove?\n> ")
         checker = country.remove_year(yearPicked)
         checkBool(checker)
            
@@ -486,8 +507,8 @@ def addCountry(ListCountries):
 #add year to a country
 def addYearToCountry(ListCountries):
     countryName = input("Name or TAG of the country:\n> ")
-    year = int(input("Year you want to add:\n> "))
-    value = float(input("Percentage you want to add:\n> "))
+    year = inputInt("Year you want to add:\n> ")
+    value = inputFloat("Percentage you want to add:\n> ")
     countryNode = ListCountries.get_node_country(countryName)
     if countryNode.get_years() != None:
         checker = countryNode.get_years().add_year(year, value)
