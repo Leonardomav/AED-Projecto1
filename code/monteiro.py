@@ -93,7 +93,7 @@ class stackCountries:
 					self.peek().displayInfo()
 					print("\nWhich year do you want to add info about? The years above already have information, if you want to edit it, choose the 'edit value' option in the menu.")
 					year = input(">")
-					self.peek().addInfo(year)
+					self.peek().addInfo(year,None)
 					break
 
 				elif op == 2:	#edit values
@@ -122,12 +122,33 @@ class stackCountries:
 					deletedVal = self.pop()
 					break
 
+				elif op == 6:	#edit year
+					#[DONE]
+					self.peek().displayInfo()
+					print("\nWhich year do you want to edit?")
+					year = input(">")
+					self.peek().years.editYear(year)
+					break
+
+				elif op == 7:
+					print("which year do you want to see if exists info about?")
+					year = input(">")
+					self.peek().searchYear(year)
+					break
+
 				else:
 					self.peek().displayInfo()	#[REMOVE]debugging purpose only 
 					break
 
 			else:
 				stackAux.push(self.pop())
+		self.concatenate(stackAux)
+
+	def displayInfo(self):
+		stackAux = stackCountries()
+		for i in range(0, self.size()):
+			self.peek().displayInfo()
+			stackAux.push(self.pop())
 		self.concatenate(stackAux)
 
 class CountryNode:
@@ -158,14 +179,17 @@ class CountryNode:
 		print('\n' + self.cName + ' - ' + self.cCode)
 		self.years.displayInfo(stackYears())
 
-	def addInfo(self, year):				#same as below
-		self.years.addInfo(year)
+	def addInfo(self, year, value):				#same as below
+		self.years.addInfo(year, value)
 
 	def editInfo(self, year):				#is this really necessary?
 		self.years.editInfo(year)
 
 	def removeInfo(self, year):				#same as above
 		self.years.removeInfo(year)
+
+	def searchYear(self, year):
+		self.years.searchYear(year)
 
 class stackYears:
 	def __init__(self):
@@ -203,19 +227,26 @@ class stackYears:
 			stackAux.push(self.pop())
 		self.concatenate(stackAux)
 
-	def addInfo(self, year):			#adds a pair year/info
+	def addInfo(self, year, value):			#adds a pair year/info
 		stackAux = stackYears()
 		for i in range(0, self.size()):
-			if int(year) == int(self.peek()[0]):
-				print("The year selected already has information, to edit choose 'edit info' in the menu.")
-				break
-			elif int(year) < int(self.peek()[0]):
-				print("What was the '%' of population with access to electricity in " + str(year))
-				newValue = input(">")
-				self.push(tuple([int(year), float(newValue)]))
-				break
+			if value == None:	#NORMAL USE
+				if int(year) == int(self.peek()[0]):
+					print("The year selected already has information, to edit choose 'edit info' in the menu.")
+					break
+				elif int(year) < int(self.peek()[0]):
+					print("What was the '%' of population with access to electricity in " + str(year))
+					newValue = input(">")
+					self.push(tuple([int(year), float(newValue)]))
+					break
+				else:
+					stackAux.push(self.pop())
 			else:
-				stackAux.push(self.pop())
+				if int(year) < int(self.peek()[0]):
+					self.push(tuple([int(year), float(value)]))
+				else:
+					stackAux.push(self.pop())
+
 		self.concatenate(stackAux)
 
 	def editInfo(self, year):			#edits the value of a year/value pair
@@ -226,6 +257,21 @@ class stackYears:
 				newValue = input(">")
 				self.pop()
 				self.push(tuple([int(year), float(newValue)]))
+				break
+			else:
+				stackAux.push(self.pop())
+		self.concatenate(stackAux)
+
+	def editYear(self, year): 	#edits the year, not the value
+		#WE'RE ASSUMING THE NEW YEAR SELECTED DOESN'T EXIST YET
+		stackAux = stackYears()
+		for i in range(0, self.size()):
+			if int(year) == int(self.peek()[0]):
+				print("What would be the new year?")
+				newYear = input(">")
+				value = self.peek()[1]
+				self.pop()
+				self.addInfo(newYear, value)
 				break
 			else:
 				stackAux.push(self.pop())
@@ -242,6 +288,27 @@ class stackYears:
 				stackAux.push(self.pop())
 		self.concatenate(stackAux)
 
+	def searchYear(self, year):
+		if int(year) < int(self.peek()[0]):
+			print("There's no info about that year.")
+			return
+
+		stackAux = stackYears()
+		found = 0
+
+		for i in range(0, self.size()):
+			if int(year) == int(self.peek()[0]):
+				print("Value for year " + str(year) + " is " + str(self.peek()[1]) + "%")
+				found = 1
+				break
+
+			else:
+				stackAux.push(self.pop())
+
+		if found == 0:
+			print("There's no info about that year.")
+		self.concatenate(stackAux)
+
 if __name__ == '__main__':
 	stack = loadCsvToArray()
 	stack.invert(stackCountries())
@@ -250,10 +317,15 @@ if __name__ == '__main__':
 	#print(stack.peek().cCode)
 	#print(stack.peek().years.peek())
 	
-	stack.search('PRT', 2)	#edit
-	stack.search('PRT', 3)	#remove
-	stack.search('PRT', 1)	#add
-	stack.search('PRT', 0)	#just print to see info
+	#stack.search('PRT', 2)			#edit
+	#stack.search('PRT', 3)			#remove
+	#stack.search('PRT', 1)			#add
+	#stack.search('PRT', 6)			#edit year
+	#stack.search('PRT', 0)			#just print to see info
+	stack.search('PRT', 7)			#search if there's a value to the year selected
+	#stack.search('Portugal', 0)	#just print to see info
+
+	#stack.displayInfo()	#display all info
 
 	#print(stack.peek().cName)
 	#print(stack.peek().cCode)
