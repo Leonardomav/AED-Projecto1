@@ -136,6 +136,13 @@ class stackCountries:
 					self.peek().searchYear(year)
 					break
 
+				elif op == 8:
+					print("Insert the range of values you want to search:")
+					lower = input("Min>")
+					higher = input("Max>")
+					self.peek().valueInRange(lower, higher)
+					break
+
 				else:
 					self.peek().displayInfo()	#[REMOVE]debugging purpose only 
 					break
@@ -148,6 +155,15 @@ class stackCountries:
 		stackAux = stackCountries()
 		for i in range(0, self.size()):
 			self.peek().displayInfo()
+			stackAux.push(self.pop())
+		self.concatenate(stackAux)
+
+	def displayInfoForYear(self):
+		print("which year do you want to see if exists info about?")
+		year = input(">")
+		stackAux = stackCountries()
+		for i in range(0, self.size()):
+			self.peek().searchYear(year)
 			stackAux.push(self.pop())
 		self.concatenate(stackAux)
 
@@ -188,8 +204,11 @@ class CountryNode:
 	def removeInfo(self, year):				#same as above
 		self.years.removeInfo(year)
 
-	def searchYear(self, year):
-		self.years.searchYear(year)
+	def searchYear(self, year):				#search for existance of a value for a certain year
+		self.years.searchYear(year, self.cName)
+
+	def valueInRange(self, lower, higher):		#prints every value inbetween lower and higher
+		self.years.valueInRange(lower, higher)
 
 class stackYears:
 	def __init__(self):
@@ -288,26 +307,39 @@ class stackYears:
 				stackAux.push(self.pop())
 		self.concatenate(stackAux)
 
-	def searchYear(self, year):
-		if int(year) < int(self.peek()[0]):
-			print("There's no info about that year.")
-			return
+	def searchYear(self, year, cName):
+		if self.size() > 0:
+			if int(year) < int(self.peek()[0]):
+				print("There's no info about that year.")
+				return
 
+			stackAux = stackYears()
+			found = 0
+
+			for i in range(0, self.size()):
+				if int(year) == int(self.peek()[0]):
+					print("In " + str(year) + ", " + str(self.peek()[1]) + "%" + " of the population had access to electricity in " + str(cName))
+					found = 1
+					break
+
+				else:
+					stackAux.push(self.pop())
+
+			if found == 0:
+				print("There's no info about that year.")
+			self.concatenate(stackAux)
+		else:
+			print("We have no information about the year " + str(year) + " in " + str(cName))
+
+	def valueInRange(self, lower, higher):	#prints all values between lower and higher
 		stackAux = stackYears()
-		found = 0
-
 		for i in range(0, self.size()):
-			if int(year) == int(self.peek()[0]):
-				print("Value for year " + str(year) + " is " + str(self.peek()[1]) + "%")
-				found = 1
-				break
-
-			else:
-				stackAux.push(self.pop())
-
-		if found == 0:
-			print("There's no info about that year.")
+			node = self.pop()
+			if float(node[1]) >= float(lower) and float(node[1]) <= float(higher):
+				print(str(node[0]) + " - " + str(node[1]))
+			stackAux.push(node)
 		self.concatenate(stackAux)
+
 
 if __name__ == '__main__':
 	stack = loadCsvToArray()
@@ -322,10 +354,12 @@ if __name__ == '__main__':
 	#stack.search('PRT', 1)			#add
 	#stack.search('PRT', 6)			#edit year
 	#stack.search('PRT', 0)			#just print to see info
-	stack.search('PRT', 7)			#search if there's a value to the year selected
+	#stack.search('PRT', 7)			#search if there's a value to the year selected
+	#stack.search('PRT', 8)			#value in range
 	#stack.search('Portugal', 0)	#just print to see info
 
 	#stack.displayInfo()	#display all info
+	#stack.displayInfoForYear()
 
 	#print(stack.peek().cName)
 	#print(stack.peek().cCode)
