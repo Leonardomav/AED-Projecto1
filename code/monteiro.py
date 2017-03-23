@@ -20,7 +20,7 @@ def loadCsvToArray():
 			countries.push(CountryNode(row[0], row[1] , years))
 			if iterator == 0:
 				countries.pop()
-			iterator = 1
+				iterator = 1
 	
 	file.close()									#closes the file since we don't need it open anymore
 	return countries								#returns the stack
@@ -212,7 +212,7 @@ class stackYears:
 			elif int(year) < int(self.peek()[0]):
 				print("What was the '%' of population with access to electricity in " + str(year))
 				newValue = input(">")
-				self.push(tuple([int(year), flaot(newValue)]))
+				self.push(tuple([int(year), float(newValue)]))
 				break
 			else:
 				stackAux.push(self.pop())
@@ -250,10 +250,10 @@ if __name__ == '__main__':
 	#print(stack.peek().cCode)
 	#print(stack.peek().years.peek())
 	
-	#stack.search('PRT', 2)	#edit
-	#stack.search('PRT', 3)	#remove
-	#stack.search('PRT', 1)	#add
-	#stack.search('PRT', 0)	#just print to see info
+	stack.search('PRT', 2)	#edit
+	stack.search('PRT', 3)	#remove
+	stack.search('PRT', 1)	#add
+	stack.search('PRT', 0)	#just print to see info
 
 	#print(stack.peek().cName)
 	#print(stack.peek().cCode)
