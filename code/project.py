@@ -1,6 +1,17 @@
+import time
 import monteiro as monteiro
 import doubleLinkedLists as dll
 import sopas as sopas
+
+def inputInt(string):
+    while True:
+        try:
+            num = int(input(string))
+        except ValueError:
+            print("Error... Please try again...")
+            continue
+        else:
+            return num
 
 def loadStructures(): #loads the structures to be used in the program
 	DoubleLinkedLists = dll.loadCsvToArray()
@@ -9,25 +20,15 @@ def loadStructures(): #loads the structures to be used in the program
 
 	return [monteiro, DoubleLinkedLists, sopas]
 
-def main():
-	countriesStack, countriesList, countriesAVL = loadStructures()
-
-	while True:
-		structPicked=menuDataStrut()
-		if structPicked == 0:
-			break
-		menu(countriesStack, countriesList, countriesAVL, structPicked)
-	
-
 def menuDataStrut():
 
 	while True:
 		print("\nWhich one of the following data structure you want want to use?")
-		print("1 - Dictionaries")
-		print("2 - DoubleLinkedLists of DoubleLinkedLists")
-		print("3 - @Sopas Strut")
+		print("1 - Stack of Stacks")
+		print("2 - DoubleLinkedList of DoubleLinkedLists")
+		print("3 - AVL tree of AVL trees")
 		print("0 - Quit")
-		structPicked= int(input("> "))
+		structPicked= inputInt("> ")
 		if structPicked == 0 or structPicked == 1 or structPicked == 2 or structPicked == 3:
 			break
 		else:
@@ -50,8 +51,10 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked):
 		print("9  - Remove one year of one country;")
 		print("10 - Add one country;")
 		print("11 - Add one pair [Year, Percentage] to a country;")
+		print("12 - BENCHMARKING - Add X years;")
 		print("0  - Quit")
-		choice = int(input("> "))
+		choice = inputInt("> ")
+
 
 		#delete the "continues"
 		if choice == 1:
@@ -155,12 +158,23 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked):
 				#@MONTEIRO STRUT FUNCTION HERE
 
 		elif choice == 11:
-
 			if structPicked == 1:
 				continue
 				#@SOPAS STRUT FUNCTION HERE
 			elif structPicked == 2:
 				dll.addYearToCountry(countriesList)
+			elif structPicked == 3:
+				continue
+				#@MONTEIRO STRUT FUNCTION HERE
+
+		elif choice == 12:
+			if structPicked == 1:
+				continue
+				#@SOPAS STRUT FUNCTION HERE
+			elif structPicked == 2:
+				dll.benchmarkingAddYearsMiddle(countriesList)
+				dll.benchmarkingAddYearsStart(countriesList)
+				dll.benchmarkingAddYearsEnd(countriesList)
 			elif structPicked == 3:
 				continue
 				#@MONTEIRO STRUT FUNCTION HERE
@@ -172,7 +186,14 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked):
 			print("Option not available... Try Again...\n")
 
 
+def main():
+	countriesStack, countriesList, countriesAVL = loadStructures()
 
+	while True:
+		structPicked=menuDataStrut()
+		if structPicked == 0:
+			break
+		menu(countriesStack, countriesList, countriesAVL, structPicked)
 
 if __name__ == '__main__': 		
 	main()
