@@ -51,7 +51,8 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked):
 		print("9  - Remove one year of one country;")
 		print("10 - Add one country;")
 		print("11 - Add one pair [Year, Percentage] to a country;")
-		print("12 - BENCHMARKING - Add X years;")
+		print("12 - BENCHMARKING - Add 'x' years;")
+		print("13 - BENCHMARKING - Add and remove 'x' countries;")
 		print("0  - Quit")
 		choice = inputInt("> ")
 
@@ -175,6 +176,16 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked):
 				dll.benchmarkingAddYearsMiddle(countriesList)
 				dll.benchmarkingAddYearsStart(countriesList)
 				dll.benchmarkingAddYearsEnd(countriesList)
+			elif structPicked == 3:
+				continue
+				#@MONTEIRO STRUT FUNCTION HERE
+
+		elif choice == 13:
+			if structPicked == 1:
+				continue
+				#@SOPAS STRUT FUNCTION HERE
+			elif structPicked == 2:
+				dll.benchmarkingAddCountries(countriesList)
 			elif structPicked == 3:
 				continue
 				#@MONTEIRO STRUT FUNCTION HERE

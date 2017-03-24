@@ -138,18 +138,14 @@ class CountryList:
         temp=self.getNodeCountry(country)
         if temp != None:
             if temp.getPrev() == None and temp.getNext() == None:
-                print("case 1")
                 self.head = None
             elif temp.getPrev() == None and temp.getNext() != None:
-                print("case 2")
                 self.head = temp.getNext()
                 temp.getNext().setPrev(None)
             elif temp.getPrev() != None and temp.getNext() == None:
-                print("case 3")
                 self.tail = temp.getNext()
                 temp.getPrev().setNext(None)
             else:
-                print("case 4")
                 temp.getPrev().setNext(temp.getNext())
                 temp.getNext().setPrev(temp.getPrev())            
                 
@@ -417,12 +413,16 @@ def allYearsFromAllCountries(ListCountries):
     currentNodeC = ListCountries.head
     while currentNodeC!=None:
         print('\nCountry - ' + currentNodeC.getCountryName())
-        currentNodeY = currentNodeC.getYears().head
-        while currentNodeY!=None:
-            print(str(currentNodeY.getYear()) + ' - ' + str(currentNodeY.getData())+'%') 
-        
-            currentNodeY = currentNodeY.getNext()
+        if(currentNodeC.getYears() != None):
+            currentNodeY = currentNodeC.getYears().head
+            while currentNodeY!=None:
+                print(str(currentNodeY.getYear()) + ' - ' + str(currentNodeY.getData())+'%') 
             
+                currentNodeY = currentNodeY.getNext()
+            
+        else:
+            print("This country as no data registred...")
+        
         currentNodeC = currentNodeC.getNext()
         
 #Prints the values and respective years from a certain country between a given range of percentages
@@ -522,3 +522,18 @@ def benchmarkingAddYearsEnd(ListCountries):
     end = time.time()
     print('[END] - Done in ' + str(end - start) + ' seconds...')
 
+def benchmarkingAddCountries(ListCountries):
+    nCountries = inputInt("\nNumber of years to add:\n>")
+    start = time.time()
+    for i in range(nCountries):
+        ListCountries.addCountry([str(i), str(i)])
+    end = time.time()
+    print('Added all the countries in ' + str(end - start) + ' seconds...')
+    benchmarkingRemoveCountries(ListCountries, nCountries)
+
+def benchmarkingRemoveCountries(ListCountries, nCountries):
+    start = time.time()
+    for i in range(nCountries):
+        ListCountries.removeCountry(str(i))
+    end = time.time()
+    print('Removed all the coutries in ' + str(end - start) + ' seconds...')
