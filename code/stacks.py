@@ -1,5 +1,4 @@
 import csv
-from operator import itemgetter 	#testing this
 
 csv.register_dialect('AED', delimiter=';') #registers a new dialect, separated with ";", instead of the default ","
 
