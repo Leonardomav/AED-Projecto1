@@ -93,7 +93,7 @@ class CountryList:
         else:
             return False
 
-    #check if country exists, then add yearslist to that country {country -> TAG}
+    #check if country exists, then add yearsList to that country {country -> TAG}
     def addYears(self, years, country):
         node = self.getNodeCountry(country)
         if node != None and node.getYears()==None:
@@ -503,15 +503,18 @@ def benchmarkingAddYearsMiddle(ListCountries):
         yearsList.addYear(i, i)
     end = time.time()
     print('[MIDLE] - Done in ' + str(end - start) + ' seconds...')
+    benchmarkingRemoveYears(ListCountries, yearsList, 0, nYears)
+
 
 def benchmarkingAddYearsStart(ListCountries):
     nYears = inputInt("\nNumber of years to add:\n>")
     start = time.time()
     yearsList = ListCountries.getNodeCountry("PRT").getYears()
-    for i in range(0, -nYears, -1):
+    for i in reversed(range( -nYears, 0)):
         yearsList.addYear(i, i)
     end = time.time()
     print('[BEGINNING] - Done in ' + str(end - start) + ' seconds...')
+    benchmarkingRemoveYears(ListCountries, yearsList, -nYears, 0)
 
 def benchmarkingAddYearsEnd(ListCountries):
     nYears = inputInt("\nNumber of years to add:\n>")
@@ -521,6 +524,17 @@ def benchmarkingAddYearsEnd(ListCountries):
         yearsList.addYear(i, i)
     end = time.time()
     print('[END] - Done in ' + str(end - start) + ' seconds...')
+    benchmarkingRemoveYears(ListCountries, yearsList, 2100, 2100+nYears)
+
+
+def benchmarkingRemoveYears(ListCountries, yearsList, min, max):
+    start = time.time()
+    for i in range(min, max):
+        yearsList.removeYear(i)
+
+    end = time.time()
+    print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
+
 
 def benchmarkingAddCountries(ListCountries):
     nCountries = inputInt("\nNumber of years to add:\n>")
