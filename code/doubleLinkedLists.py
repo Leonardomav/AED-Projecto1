@@ -534,7 +534,7 @@ def benchmarkingAddYearsMiddle(ListCountries):
         yearsList.addYear(i, i)
     end = time.time()
     print('[MIDLE] - Done in ' + str(end - start) + ' seconds...')
-    benchmarkingRemoveYears(ListCountries, yearsList, 0, nYears)
+    benchmarkingSearchYears(ListCountries, yearsList, 0, nYears)
 
 
 def benchmarkingAddYearsStart(ListCountries):
@@ -545,7 +545,7 @@ def benchmarkingAddYearsStart(ListCountries):
         yearsList.addYear(i, i)
     end = time.time()
     print('[BEGINNING] - Done in ' + str(end - start) + ' seconds...')
-    benchmarkingRemoveYears(ListCountries, yearsList, -nYears, 0)
+    benchmarkingSearchYears(ListCountries, yearsList, -nYears, 0)
 
 def benchmarkingAddYearsEnd(ListCountries):
     nYears = inputInt("\nNumber of years to add:\n>")
@@ -555,7 +555,16 @@ def benchmarkingAddYearsEnd(ListCountries):
         yearsList.addYear(i, i)
     end = time.time()
     print('[END] - Done in ' + str(end - start) + ' seconds...')
-    benchmarkingRemoveYears(ListCountries, yearsList, 2100, 2100+nYears)
+    benchmarkingSearchYears(ListCountries, yearsList, 2100, 2100+nYears)
+
+def benchmarkingSearchYears(ListCountries, yearsList, min, max):
+    start = time.time()
+    for i in range(min, max):
+        yearsList.getNodeYear(i)
+
+    end = time.time()
+    print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
+    benchmarkingRemoveYears(ListCountries, yearsList, min, max)
 
 
 def benchmarkingRemoveYears(ListCountries, yearsList, min, max):
@@ -566,7 +575,6 @@ def benchmarkingRemoveYears(ListCountries, yearsList, min, max):
     end = time.time()
     print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
 
-
 def benchmarkingAddCountries(ListCountries):
     nCountries = inputInt("\nNumber of years to add:\n>")
     start = time.time()
@@ -574,6 +582,14 @@ def benchmarkingAddCountries(ListCountries):
         ListCountries.addCountry([str(i), str(i)])
     end = time.time()
     print('Added all the countries in ' + str(end - start) + ' seconds...')
+    benchmarkingSearchCountries(ListCountries, nCountries)
+
+def benchmarkingSearchCountries(ListCountries, nCountries):
+    start = time.time()
+    for i in range(nCountries):
+        ListCountries.getNodeCountry(str(i))
+    end = time.time()
+    print('Searched all the countries in ' + str(end - start) + ' seconds...')
     benchmarkingRemoveCountries(ListCountries, nCountries)
 
 def benchmarkingRemoveCountries(ListCountries, nCountries):
