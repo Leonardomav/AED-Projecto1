@@ -164,17 +164,21 @@ class YearsList:
 
     #add YearNode to the end of the list if the year does no exist {requiers year and value} 
     def addYear(self, year, value):
-        if self.getNodeYear(year)==None:
+        current = self.head
+
+        if current == None:
             if (self.head == None):
-                self.head = YearNode(year, value)
+                self.head = YearNode(year, value)                
                 self.tail=self.head
-            else:
-                current=self.head    
-                while current.getNext() != None and current.getYear() < year:
-                    current = current.getNext()
-                    
-                
-                    
+                return True
+
+        else:
+
+            while current.getNext() != None and current.getYear() <year:
+                current = current.getNext()
+
+            if current.getYear() != year:
+
                 if current.getPrev() != None and current.getNext() != None:
                     newNode = YearNode(year, value, current, current.getPrev())
                     current.getPrev().setNext(newNode)
@@ -204,11 +208,12 @@ class YearsList:
                     else:
                         newNode = YearNode(year, value, None, current)
                         current.setNext(newNode)
-                        self.tail=newNode                        
-                    
-            return True
-        else:
-            return False
+                        self.tail=newNode               
+                
+                return True
+
+            else:
+                return False
 
     #Returns Year and Value, given the index of the node
     def getNodeIndex(self, index):
@@ -370,19 +375,22 @@ def pickCountry(ListCountries):
     if countryNode != None and countryNode.getYears() != None:
         return countryNode
     else:
-        print("\n..Country does not exist or has no information available...\n")
         return None
     
 #Main function to print all the years with values from a given country
 def allYearsFromCountry(ListCountries):
     country=pickCountry(ListCountries)
-    if country.getYears() != None:
-        currentNode = country.getYears().head
-        print('\nYears with info for -> ' + country.getCountryName() + ' - ' + country.getCountryTag() + ':')
-        while currentNode!=None:
-            print(str(currentNode.getYear()) + ' - ' + str(currentNode.getData())+'%')
-            
-            currentNode = currentNode.getNext()
+    if country != None:
+        if country.getYears() != None:
+            currentNode = country.getYears().head
+            print('\nYears with info or -> ' + country.getCountryName() + ' - ' + country.getCountryTag() + ':')
+            while currentNode!=None:
+                print(str(currentNode.getYear()) + ' - ' + str(currentNode.getData())+'%')
+                
+                currentNode = currentNode.getNext()
+    else: 
+        print("\n..Country does not exist or has no information available...\n")
+
     
     
 #Print a pylist with the values of all countrys of a given year
@@ -400,19 +408,23 @@ def allCountryFromYear(ListCountries):
 #Prints the value of one year of one given country
 def oneYearFromOneCoutry(ListCountries):
     countryPicked = pickCountry(ListCountries)
-    if countryPicked.getYears() != None:
-        yearPicked = inputInt("\nWhat year do you want?\n> ")
-        yearNode = countryPicked.getYears().getNodeYear(yearPicked)
-        if yearNode != None:
-            print('\n' + countryPicked.getCountryName() + ' - ' + str(yearPicked) + ' - '  + str(yearNode.getData())+'%')
-        else: 
-            print("No Data Available\n")
+    if country != None:
+        if countryPicked.getYears() != None:
+            yearPicked = inputInt("\nWhat year do you want?\n> ")
+            yearNode = countryPicked.getYears().getNodeYear(yearPicked)
+            if yearNode != None:
+                print('\n' + countryPicked.getCountryName() + ' - ' + str(yearPicked) + ' - '  + str(yearNode.getData())+'%')
+            else: 
+                print("No Data Available\n")
+
+    else:
+        print("\n..Country does not exist or has no information available...\n")
     
 #Prints all the years from all the countries
 def allYearsFromAllCountries(ListCountries):
     currentNodeC = ListCountries.head
     while currentNodeC!=None:
-        print('\nCountry - ' + currentNodeC.getCountryName())
+        print('\nCountry - ' + currentNodeC.getCountryName() + ' - ' + currentNodeC.getCountryTag())
         if(currentNodeC.getYears() != None):
             currentNodeY = currentNodeC.getYears().head
             while currentNodeY!=None:
@@ -428,29 +440,41 @@ def allYearsFromAllCountries(ListCountries):
 #Prints the values and respective years from a certain country between a given range of percentages
 def RangeOfDataOfOneCountry(ListCountries):
     country = pickCountry(ListCountries)
-    if country.getYears()!=None:
-        Min = inputFloat("\nMinimum Percentage:\n> ")
-        Max = inputFloat("Maximum Percentage:\n> ")
-        print('\n' + country.getCountryName() + ' - Years with the values between ' + str(Min) + '%' +' and ' + str(Max)+'%:')
-        country.getYears().getNodeRange(Min, Max)
+    if country != None:
+        if country.getYears()!=None:
+            Min = inputFloat("\nMinimum Percentage:\n> ")
+            Max = inputFloat("Maximum Percentage:\n> ")
+            print('\n' + country.getCountryName() + ' - Years with the values between ' + str(Min) + '%' +' and ' + str(Max)+'%:')
+            country.getYears().getNodeRange(Min, Max)
+
+    else:
+        print("\n..Country does not exist or has no information available...\n")
         
 #if it exists, edits one year of a country
 def editYearOfACountry(ListCountries):
     Country = pickCountry(ListCountries)
-    if Country.getYears() != None:
-        yearPicked = inputInt("\nWhat year do you want to edit?\n> ")
-        newYear = inputInt("What year do you want to insert?\n> ")
-        checker = Country.getYears().editYear(yearPicked, newYear)
-        checkBool(checker)
+    if country != None:
+        if Country.getYears() != None:
+            yearPicked = inputInt("\nWhat year do you want to edit?\n> ")
+            newYear = inputInt("What year do you want to insert?\n> ")
+            checker = Country.getYears().editYear(yearPicked, newYear)
+            checkBool(checker)
+
+    else:
+        print("\n..Country does not exist or has no information available...\n")
          
 #if it exists, edits the value of one year of a country
 def editValueOfAYear(ListCountries):
     Country = pickCountry(ListCountries)
-    if Country.getYears() != None:
-        yearPicked = inputInt("\nWhat year do you want to edit?\n> ")
-        newValue = inputFloat("What value do you want to insert?\n> ")
-        checker = Country.getYears().editValue(yearPicked, newValue)
-        checkBool(checker)
+    if country != None:
+        if Country.getYears() != None:
+            yearPicked = inputInt("\nWhat year do you want to edit?\n> ")
+            newValue = inputFloat("What value do you want to insert?\n> ")
+            checker = Country.getYears().editValue(yearPicked, newValue)
+            checkBool(checker)
+
+    else:
+        print("\n..Country does not exist or has no information available...\n")
     
 #Remove completly one country
 def removeCountry(ListCountries):
@@ -462,10 +486,14 @@ def removeCountry(ListCountries):
 #Remove avalable info for one year of one country
 def removeYearFromCountry(ListCountries):
     country = pickCountry(ListCountries)
-    if country.getYears() != None:
-        yearPicked = inputInt("\nWhat year do you want to remove?\n> ")
-        checker = country.getYears().removeYear(yearPicked)
-        checkBool(checker)
+    if country != None:
+        if country.getYears() != None:
+            yearPicked = inputInt("\nWhat year do you want to remove?\n> ")
+            checker = country.getYears().removeYear(yearPicked)
+            checkBool(checker)
+
+    else: 
+        print("\n..Country does not exist or has no information available...\n")
            
 #Add a country with year->none 
 def addCountry(ListCountries):
@@ -479,19 +507,22 @@ def addCountry(ListCountries):
     
 #add year to a country
 def addYearToCountry(ListCountries):
-    countryNode = pickCountry(ListCountries)
+    printAllCountries(ListCountries)
+    countryPicked = input("\nWhat country do you want?\n> ")
+    countryNode = ListCountries.getNodeCountry(countryPicked)
     year = inputInt("\nYear you want to add:\n> ")
     value = inputFloat("Percentage you want to add:\n> ")
-    if countryNode.getYears() != None:
+
+    if countryNode == None:
+        print("\n..Country does not exist or has no information available...\n")
+    elif countryNode.getYears() != None:
         checker = countryNode.getYears().addYear(year, value)
         checkBool(checker)
-    elif countryNode != None:
+    else:
         listYears = YearsList()
         listYears.addYear(year, value)
         checker = ListCountries.addYears(listYears, countryNode.getCountryTag())
         checkBool(checker)
-    else:
-        print("Country does not exist...\n")
 
 #-------------------------------------------------------------------------------------
 
