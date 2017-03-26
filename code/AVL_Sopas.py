@@ -191,10 +191,10 @@ def benchmarkingAddYears(arvorePais):
 def benchmarkingSearchYears(yearsTree, nYears):
 	start = time.time()
 	for i in range(nYears):
-		yearsTree.getNodeYear(i)
+		yearsTree.yearSearch(i)
 
 	end = time.time()
-	print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
+	print('[Searched] - Done in ' + str(end - start) + ' seconds...')
 	benchmarkingRemoveYears(yearsTree, nYears)
 
 #Removes nYears years and times the process
@@ -232,4 +232,4 @@ def benchmarkingRemoveCountries(arvorePais, nCountries):
     for i in range(nCountries):
         arvorePais.delete(str(i))
     end = time.time()
-    print('Removed all the coutries in ' + str(end - start) + ' seconds...')
+    print('Removed all the countries in ' + str(end - start) + ' seconds...')

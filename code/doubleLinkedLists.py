@@ -76,20 +76,31 @@ class CountryList:
 
     #add country to the end of the list {country -> []}
     def addCountry(self, country):
-        if self.getNodeCountry(country[1])==None and self.getNodeCountry(country[0])==None:
+
+        currentNode = self.head
+
+        if currentNode != None:
+            while country[1] not in currentNode.getCountry() and country[0] not in currentNode.getCountry() and currentNode.getNext()!=None:
+                currentNode = currentNode.getNext()
+
+            if  (country[1] in currentNode.getCountry()) and (country[0] in currentNode.getCountry()):
+                last = None
+            else: 
+                last = currentNode
+        else:
+            last = "Pass"
+
+
+        if last != None:
             if (self.head == None):
                 self.head = CountryNode(country)
                 self.tail=self.head
                 
-            else:
-                current=self.head    
-            
-                while(current.getNext() != None):
-                    current = current. getNext()
-                    
-                current.setNext(CountryNode(country, None, None, current))
-                self.tail = current.getNext()
+            else:   
+                last.setNext(CountryNode(country, None, None, currentNode))
+                self.tail = last.getNext()
             return True
+        
         else:
             return False
 
@@ -101,21 +112,6 @@ class CountryList:
             return True
         else:
             return False
-
-    #Returns CountryNode, given the index the node
-    def getNodeIndex(self, index):
-        currentNode = self.head
-        if currentNode == None:
-            return None
-
-        i=0
-        while i<index:
-            currentNode = currentNode.getNext()
-            if currentNode == None:
-                break
-            i=i+1
-
-        return currentNode
 
     #Returns CountryNode, given TAG or NAME of the country
     def getNodeCountry(self, country):
@@ -214,21 +210,6 @@ class YearsList:
 
             else:
                 return False
-
-    #Returns Year and Value, given the index of the node
-    def getNodeIndex(self, index):
-        currentNode = self.head
-        if currentNode == None:
-            return None
-    
-        i=0
-        while i<index:
-            currentNode = currentNode.getNext()
-            if currentNode == None:
-                break
-            i=i+1
-    
-        return currentNode
 
     #Returns YearNode given the year
     def getNodeYear(self, year):
@@ -563,7 +544,7 @@ def benchmarkingSearchYears(ListCountries, yearsList, min, max):
         yearsList.getNodeYear(i)
 
     end = time.time()
-    print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
+    print('[SEARCH] - Done in ' + str(end - start) + ' seconds...')
     benchmarkingRemoveYears(ListCountries, yearsList, min, max)
 
 
