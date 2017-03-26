@@ -81,7 +81,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
             if structPicked == 1:
                 countriesStack.search('', 7)
             elif structPicked == 2:
-                dll.oneYearFromOneCoutry(countriesList)
+                dll.oneYearFromOneCountry(countriesList)
             elif structPicked == 3:
                 AVL.searchSpecific(countriesAVL)
 
@@ -186,4 +186,4 @@ def main():
 
 
 if __name__ == '__main__':
-main()
+	main()

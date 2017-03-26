@@ -387,7 +387,7 @@ def allCountryFromYear(ListCountries):
         currentNode = currentNode.getNext()
 
 #Prints the value of one year of one given country
-def oneYearFromOneCoutry(ListCountries):
+def oneYearFromOneCountry(ListCountries):
     countryPicked = pickCountry(ListCountries)
     if countryPicked != None:
         if countryPicked.getYears() != None:
