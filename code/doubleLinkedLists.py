@@ -576,7 +576,7 @@ def benchmarkingRemoveYears(ListCountries, yearsList, min, max):
     print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
 
 def benchmarkingAddCountries(ListCountries):
-    nCountries = inputInt("\nNumber of years to add:\n>")
+    nCountries = inputInt("\nNumber of countries to add:\n>")
     start = time.time()
     for i in range(nCountries):
         ListCountries.addCountry([str(i), str(i)])
