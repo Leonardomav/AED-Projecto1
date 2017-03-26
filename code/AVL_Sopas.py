@@ -186,19 +186,10 @@ def benchmarkingAddYears(arvorePais):
     end = time.time()
     print('Done in ' + str(end - start),'seconds...')
 	#deltes the added values
-    benchmarkingSearchYears(yearsTree, nYears)
-
-def benchmarkingSearchYears(yearsTree, nYears):
-	start = time.time()
-	for i in range(nYears):
-		yearsTree.getNodeYear(i)
-
-	end = time.time()
-	print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
-	benchmarkingRemoveYears(yearsTree, nYears)
+    benchmarkingRemoveYears(arvorePais, yearsTree, nYears)
 
 #Removes nYears years and times the process
-def benchmarkingRemoveYears(yearsTree, nYears):
+def benchmarkingRemoveYears(arvorePais, yearsTree, nYears):
     start = time.time()
     for i in range(nYears):
         yearsTree.delete(i)
@@ -208,22 +199,13 @@ def benchmarkingRemoveYears(yearsTree, nYears):
 
 #Adds nCountries countries to the tree and times the process
 def benchmarkingAddCountries(arvorePais):
-    nCountries = inputInt("\nNumber of countries to add:\n>")
+    nCountries = inputInt("\nNumber of years to add:\n>")
     start = time.time()
     for i in range(nCountries):
-        arvorePais.insertCountry(str(i), str(i),None)
+        arvorePais.insertCountry([str(i), str(i)])
     end = time.time()
     print('Added all the countries in ' + str(end - start) + ' seconds...')
 	#removes the added countries
-    benchmarkingSearchCountries(arvorePais, nCountries)
-
-
-def benchmarkingSearchCountries(arvorePais, nCountries):
-    start = time.time()
-    for i in range(nCountries):
-        arvorePais.countrySearch(str(i))
-    end = time.time()
-    print('Searched all the countries in ' + str(end - start) + ' seconds...')
     benchmarkingRemoveCountries(arvorePais, nCountries)
 
 #Removes nCountries countries and times the process
