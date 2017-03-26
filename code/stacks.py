@@ -2,7 +2,7 @@ import csv
 
 csv.register_dialect('AED', delimiter=';') #registers a new dialect, separated with ";", instead of the default ","
 
-def loadCsvToArray():
+def loadStrut():
 	#loads the csv file into an array of arrays, 1
 	with open('dados.csv','r') as file: 			#opens the csv file
 		reader = csv.reader(file, dialect='AED')	
@@ -341,7 +341,7 @@ class stackYears:
 
 
 if __name__ == '__main__':
-	stack = loadCsvToArray()
+	stack = loadStrut()
 	stack.invert(stackCountries())
 	#stack.addCountry()
 	#print(stack.peek().cName)
