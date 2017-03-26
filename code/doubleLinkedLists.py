@@ -102,21 +102,6 @@ class CountryList:
         else:
             return False
 
-    #Returns CountryNode, given the index the node
-    def getNodeIndex(self, index):
-        currentNode = self.head
-        if currentNode == None:
-            return None
-
-        i=0
-        while i<index:
-            currentNode = currentNode.getNext()
-            if currentNode == None:
-                break
-            i=i+1
-
-        return currentNode
-
     #Returns CountryNode, given TAG or NAME of the country
     def getNodeCountry(self, country):
         currentNode = self.head
@@ -214,21 +199,6 @@ class YearsList:
 
             else:
                 return False
-
-    #Returns Year and Value, given the index of the node
-    def getNodeIndex(self, index):
-        currentNode = self.head
-        if currentNode == None:
-            return None
-    
-        i=0
-        while i<index:
-            currentNode = currentNode.getNext()
-            if currentNode == None:
-                break
-            i=i+1
-    
-        return currentNode
 
     #Returns YearNode given the year
     def getNodeYear(self, year):
@@ -563,7 +533,7 @@ def benchmarkingSearchYears(ListCountries, yearsList, min, max):
         yearsList.getNodeYear(i)
 
     end = time.time()
-    print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
+    print('[SEARCH] - Done in ' + str(end - start) + ' seconds...')
     benchmarkingRemoveYears(ListCountries, yearsList, min, max)
 
 
