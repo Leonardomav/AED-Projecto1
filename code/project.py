@@ -53,8 +53,8 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
         print("9  - Remove one year of one country;")
         print("10 - Add one country;")
         print("11 - Add one pair [Year, Percentage] to a country;")
-        print("12 - BENCHMARKING - Add 'x' years;")
-        print("13 - BENCHMARKING - Add and remove 'x' countries;")
+        print("12 - BENCHMARKING - Add search and remove 'x' years;")
+        print("13 - BENCHMARKING - Add search and remove 'x' countries;")
         print("0  - Quit")
         choice = inputInt("> ")
 
