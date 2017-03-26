@@ -208,10 +208,10 @@ def benchmarkingRemoveYears(yearsTree, nYears):
 
 #Adds nCountries countries to the tree and times the process
 def benchmarkingAddCountries(arvorePais):
-    nCountries = inputInt("\nNumber of years to add:\n>")
+    nCountries = inputInt("\nNumber of countries to add:\n>")
     start = time.time()
     for i in range(nCountries):
-        arvorePais.insertCountry([str(i), str(i)])
+        arvorePais.insertCountry(str(i), str(i),None)
     end = time.time()
     print('Added all the countries in ' + str(end - start) + ' seconds...')
 	#removes the added countries
