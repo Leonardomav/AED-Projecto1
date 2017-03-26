@@ -119,7 +119,7 @@ class stackCountries:
 					#[DONE]
 					self.peek().displayInfo()
 					print("\nWhich year do you want to add info about? The years above already have information, if you want to edit it, choose the 'edit value' option in the menu.")
-					year = input(">")
+					year = inputInt(">")
 					self.peek().addInfo(year,None)
 					break
 
@@ -127,7 +127,7 @@ class stackCountries:
 					#[DONE]
 					self.peek().displayInfo()
 					print("\nWhich year's value do you want to edit?")
-					year = input(">")
+					year = inputInt(">")
 					self.peek().editInfo(year)
 					break	
 
@@ -135,7 +135,7 @@ class stackCountries:
 					#[DONE]
 					self.peek().displayInfo()
 					print("\nFrom which year do you want to remove information?")
-					year = input(">")
+					year = inputInt(">")
 					self.peek().removeInfo(year)
 					break
 
@@ -153,20 +153,20 @@ class stackCountries:
 					#[DONE]
 					self.peek().displayInfo()
 					print("\nWhich year do you want to edit?")
-					year = input(">")
+					year = inputInt(">")
 					self.peek().years.editYear(year)
 					break
 
 				elif op == 7:
 					print("which year do you want to see if exists info about?")
-					year = input(">")
+					year = inputInt(">")
 					self.peek().searchYear(year)
 					break
 
 				elif op == 8:
 					print("Insert the range of values you want to search:")
-					lower = input("Min>")
-					higher = input("Max>")
+					lower = inputFloat("Min>")
+					higher = inputFloat("Max>")
 					self.peek().valueInRange(lower, higher)
 					break
 
@@ -193,7 +193,7 @@ class stackCountries:
 
 	def displayInfoForYear(self):
 		print("which year do you want to see if exists info about?")
-		year = input(">")
+		year = inputInt(">")
 		stackAux = stackCountries()
 		for i in range(0, self.size()):
 			self.peek().searchYear(year)
@@ -309,7 +309,7 @@ class stackYears:
 		for i in range(0, self.size()):
 			if int(year) == int(self.peek()[0]):
 				print("\nNew value for the selected year? (" + str(year) + ")")
-				newValue = input(">")
+				newValue = inputFloat(">")
 				self.pop()
 				self.push(tuple([int(year), float(newValue)]))
 				break
@@ -323,7 +323,7 @@ class stackYears:
 		for i in range(0, self.size()):
 			if int(year) == int(self.peek()[0]):
 				print("What would be the new year?")
-				newYear = input(">")
+				newYear = inputInt(">")
 				value = self.peek()[1]
 				self.pop()
 				self.addInfo(newYear, value)
