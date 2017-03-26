@@ -15,7 +15,7 @@ def inputInt(string):
 
 
 def loadStructures():  # loads the structures to be used in the program
-    DoubleLinkedLists = dll.loadCsvToArray()
+    DoubleLinkedLists = dll.loadCsv()
     stack = stacks.loadStrut()# chage this for the load
     stack.invert(stacks.stackCountries())
     countriesAVL = AVL.load() # chage this for the load
@@ -186,4 +186,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+main()

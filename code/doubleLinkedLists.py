@@ -291,9 +291,8 @@ class YearsList:
 
 csv.register_dialect('AED', delimiter=';') #registers a new dialect, separated with ";", instead of the default ","
 
-#loads the csv file to @Leo struct
-def loadCsvToArray():
-    #loads the csv file into an array of arrays, 1
+#loads the csv file to struct
+def loadCsv():
     with open('dados.csv','r') as file:             
         reader = csv.reader(file, dialect='AED')    
         countries = CountryList()
