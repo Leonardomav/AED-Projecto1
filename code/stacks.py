@@ -1,3 +1,4 @@
+import time
 import csv
 
 csv.register_dialect('AED', delimiter=';') #registers a new dialect, separated with ";", instead of the default ","
@@ -44,8 +45,28 @@ def saveStrutToCSV(stack):
 					if i == int(years.peek()[0]):
 						year = years.pop()			#pops the element
 						file.write('"' + str(year[1]) + '"')	#adds it to the file
-
+	file.close()
 	return
+
+def inputInt(string):
+    while True:
+        try:
+            num = int(input(string))
+        except ValueError:
+            print("Error... Please try again...")
+            continue
+        else:
+            return num
+
+def inputFloat(string):
+    while True:
+        try:
+            num = float(input(string))
+        except ValueError:
+            print("Error... Please try again...")
+            continue
+        else:
+            return num
 
 class stackCountries:
 	def __init__(self):
@@ -84,6 +105,10 @@ class stackCountries:
 
 	def search(self, keyWord, op):	#working
 		stackAux = stackCountries()
+		if keyWord == '':
+			print("Which country do you want to search about? Insert the full name or the country code.")
+			keyWord = input(">")
+
 		for i in range(0, self.size()):
 			if keyWord == self.peek().cName or keyWord == self.peek().cCode:
 				#do something
@@ -142,7 +167,7 @@ class stackCountries:
 					self.peek().valueInRange(lower, higher)
 					break
 
-				else:
+				elif op == 0:
 					self.peek().displayInfo()	#[REMOVE]debugging purpose only 
 					break
 
@@ -339,7 +364,73 @@ class stackYears:
 			stackAux.push(node)
 		self.concatenate(stackAux)
 
+###################################################################################################
 
+def benchmarkingAddYearsStart(stack):
+    nYears = inputInt("\nNumber of years to add:\n>")
+    start = time.time()
+    yearsStack = stack.peek().getYears()
+    for i in reversed(range( -nYears, 0)):
+        yearsStack.addInfo(i, i)
+        print(i)
+    end = time.time()
+    print('[BEGINNING] - Done in ' + str(end - start) + ' seconds...')
+    benchmarkingSearchYears(stack, yearsStack, -nYears, 0)
+
+def benchmarkingAddYearsEnd(stack):
+    nYears = inputInt("\nNumber of years to add:\n>")
+    start = time.time()
+    yearsStack = stack.getNodeCountry("PRT").getYears()
+    for i in range(2100, 2100+nYears):
+        yearsStack.addYear(i, i)
+    end = time.time()
+    print('[END] - Done in ' + str(end - start) + ' seconds...')
+    benchmarkingSearchYears(stack, yearsStack, 2100, 2100+nYears)
+
+def benchmarkingSearchYears(stack, yearsStack, min, max):
+    start = time.time()
+    for i in range(min, max):
+        yearsStack.getNodeYear(i)
+
+    end = time.time()
+    print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
+    benchmarkingRemoveYears(stack, yearsStack, min, max)
+
+
+def benchmarkingRemoveYears(stack, yearsStack, min, max):
+    start = time.time()
+    for i in range(min, max):
+        yearsStack.removeYear(i)
+
+    end = time.time()
+    print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
+
+def benchmarkingAddCountries(stack):
+    nCountries = inputInt("\nNumber of countries to add:\n>")
+    start = time.time()
+    for i in range(nCountries):
+        stack.addCountry([str(i), str(i)])
+    end = time.time()
+    print('Added all the countries in ' + str(end - start) + ' seconds...')
+    benchmarkingSearchCountries(stack, nCountries)
+
+def benchmarkingSearchCountries(stack, nCountries):
+    start = time.time()
+    for i in range(nCountries):
+        stack.getNodeCountry(str(i))
+    end = time.time()
+    print('Searched all the countries in ' + str(end - start) + ' seconds...')
+    benchmarkingRemoveCountries(stack, nCountries)
+
+def benchmarkingRemoveCountries(stack, nCountries):
+    start = time.time()
+    for i in range(nCountries):
+        stack.removeCountry(str(i))
+    end = time.time()
+    print('Removed all the coutries in ' + str(end - start) + ' seconds...')
+
+
+###################################################################################################
 if __name__ == '__main__':
 	stack = loadStrut()
 	stack.invert(stackCountries())
@@ -348,14 +439,14 @@ if __name__ == '__main__':
 	#print(stack.peek().cCode)
 	#print(stack.peek().years.peek())
 	
-	#stack.search('PRT', 2)			#edit
-	#stack.search('PRT', 3)			#remove
-	#stack.search('PRT', 1)			#add
-	#stack.search('PRT', 6)			#edit year
-	#stack.search('PRT', 0)			#just print to see info
-	#stack.search('PRT', 7)			#search if there's a value to the year selected
-	#stack.search('PRT', 8)			#value in range
-	#stack.search('Portugal', 0)	#just print to see info
+	#stack.search(2)	#edit
+	#stack.search(3)	#remove
+	#stack.search(1)	#add
+	#stack.search(6)	#edit year
+	#stack.search(0)	#just print to see info
+	#stack.search(7)	#search if there's a value to the year selected
+	#stack.search(8)	#value in range
+	#stack.search(0)	#just print to see info
 
 	#stack.displayInfo()	#display all info
 	#stack.displayInfoForYear()
@@ -366,3 +457,5 @@ if __name__ == '__main__':
 	#print(stack.peek().years.displayInfo(stackYears()))
 
 	#saveStrutToCSV(stack)
+	
+	benchmarkingAddYearsStart(stack)
