@@ -506,17 +506,6 @@ def addYearToCountry(ListCountries):
 
 #-------------------------------------------------------------------------------------
 
-def benchmarkingAddYearsMiddle(ListCountries):
-    nYears = inputInt("\nNumber of years to add:\n>")
-    start = time.time()
-    yearsList = ListCountries.getNodeCountry("PRT").getYears()
-    for i in range(nYears):
-        yearsList.addYear(i, i)
-    end = time.time()
-    print('[MIDLE] - Done in ' + str(end - start) + ' seconds...')
-    benchmarkingSearchYears(ListCountries, yearsList, 0, nYears)
-
-
 def benchmarkingAddYearsStart(ListCountries):
     nYears = inputInt("\nNumber of years to add:\n>")
     start = time.time()

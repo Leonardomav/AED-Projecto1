@@ -155,7 +155,6 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
                 stacks.benchmarkingAddYearsStart(countriesStack)
                 stacks.benchmarkingAddYearsEnd(countriesStack)
             elif structPicked == 2:
-                dll.benchmarkingAddYearsMiddle(countriesList)
                 dll.benchmarkingAddYearsStart(countriesList)
                 dll.benchmarkingAddYearsEnd(countriesList)
             elif structPicked == 3:
