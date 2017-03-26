@@ -54,8 +54,8 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
         print("9  - Remove one year of one country;")
         print("10 - Add one country;")
         print("11 - Add one pair [Year, Percentage] to a country;")
-        print("12 - BENCHMARKING - Add 'x' years;")
-        print("13 - BENCHMARKING - Add and remove 'x' countries;")
+        print("12 - BENCHMARKING - Add, search and remove 'x' years;")
+        print("13 - BENCHMARKING - Add, search and remove 'x' countries;")
         print("0  - Quit")
         choice = inputInt("> ")
 
@@ -81,7 +81,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
             if structPicked == 1:
                 countriesStack.search('', 7)
             elif structPicked == 2:
-                dll.oneYearFromOneCoutry(countriesList)
+                dll.oneYearFromOneCountry(countriesList)
             elif structPicked == 3:
                 AVL.searchSpecific(countriesAVL)
 
@@ -155,7 +155,6 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
                 stacks.benchmarkingAddYearsStart(countriesStack)
                 stacks.benchmarkingAddYearsEnd(countriesStack)
             elif structPicked == 2:
-                dll.benchmarkingAddYearsMiddle(countriesList)
                 dll.benchmarkingAddYearsStart(countriesList)
                 dll.benchmarkingAddYearsEnd(countriesList)
             elif structPicked == 3:
@@ -186,4 +185,4 @@ def main():
 
 
 if __name__ == '__main__':
-main()
+	main()

@@ -386,9 +386,9 @@ def allCountryFromYear(ListCountries):
         currentNode = currentNode.getNext()
 
 #Prints the value of one year of one given country
-def oneYearFromOneCoutry(ListCountries):
+def oneYearFromOneCountry(ListCountries):
     countryPicked = pickCountry(ListCountries)
-    if country != None:
+    if countryPicked != None:
         if countryPicked.getYears() != None:
             yearPicked = inputInt("\nWhat year do you want?\n> ")
             yearNode = countryPicked.getYears().getNodeYear(yearPicked)
@@ -432,12 +432,12 @@ def RangeOfDataOfOneCountry(ListCountries):
         
 #if it exists, edits one year of a country
 def editYearOfACountry(ListCountries):
-    Country = pickCountry(ListCountries)
+    country = pickCountry(ListCountries)
     if country != None:
-        if Country.getYears() != None:
+        if country.getYears() != None:
             yearPicked = inputInt("\nWhat year do you want to edit?\n> ")
             newYear = inputInt("What year do you want to insert?\n> ")
-            checker = Country.getYears().editYear(yearPicked, newYear)
+            checker = country.getYears().editYear(yearPicked, newYear)
             checkBool(checker)
 
     else:
@@ -445,12 +445,12 @@ def editYearOfACountry(ListCountries):
          
 #if it exists, edits the value of one year of a country
 def editValueOfAYear(ListCountries):
-    Country = pickCountry(ListCountries)
+    country = pickCountry(ListCountries)
     if country != None:
-        if Country.getYears() != None:
+        if country.getYears() != None:
             yearPicked = inputInt("\nWhat year do you want to edit?\n> ")
             newValue = inputFloat("What value do you want to insert?\n> ")
-            checker = Country.getYears().editValue(yearPicked, newValue)
+            checker = country.getYears().editValue(yearPicked, newValue)
             checkBool(checker)
 
     else:
@@ -459,8 +459,8 @@ def editValueOfAYear(ListCountries):
 #Remove completly one country
 def removeCountry(ListCountries):
     printAllCountries(ListCountries)
-    Country = input("\nWhat country do you want to remove?\n> ")
-    checker = ListCountries.removeCountry(Country)
+    country = input("\nWhat country do you want to remove?\n> ")
+    checker = ListCountries.removeCountry(country)
     checkBool(checker)
     
 #Remove avalable info for one year of one country
@@ -505,17 +505,6 @@ def addYearToCountry(ListCountries):
         checkBool(checker)
 
 #-------------------------------------------------------------------------------------
-
-def benchmarkingAddYearsMiddle(ListCountries):
-    nYears = inputInt("\nNumber of years to add:\n>")
-    start = time.time()
-    yearsList = ListCountries.getNodeCountry("PRT").getYears()
-    for i in range(nYears):
-        yearsList.addYear(i, i)
-    end = time.time()
-    print('[MIDLE] - Done in ' + str(end - start) + ' seconds...')
-    benchmarkingSearchYears(ListCountries, yearsList, 0, nYears)
-
 
 def benchmarkingAddYearsStart(ListCountries):
     nYears = inputInt("\nNumber of years to add:\n>")
