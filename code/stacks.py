@@ -90,7 +90,10 @@ class stackCountries:
 	def addCountry(self):
 		cName = input('Name of the country to insert:\n>')
 		cCode = input('Country code (MAX 3 char):\n>')
-		self.push(CountryNode(cName, cCode, stackYears()))	
+		self.push(CountryNode(cName, cCode, stackYears()))
+
+	def addCountryB(self, cName, cCode):
+		self.push(CountryNode(cName, cCode, stackYears()))
 
 	def invert(self, stackF): 			#stackF = Final (inverted)
 		if self.size() > 0:				#if stack is not empty
@@ -167,9 +170,15 @@ class stackCountries:
 					self.peek().valueInRange(lower, higher)
 					break
 
+				elif op == 9:
+					return self.peek().getYears()
+
 				elif op == 0:
 					self.peek().displayInfo()	#[REMOVE]debugging purpose only 
 					break
+
+				else:
+					return
 
 			else:
 				stackAux.push(self.pop())
@@ -226,10 +235,10 @@ class CountryNode:
 		self.years.editInfo(year)
 
 	def removeInfo(self, year):				#same as above
-		self.years.removeInfo(year)
+		self.years.removeInfo(year, 1)
 
 	def searchYear(self, year):				#search for existance of a value for a certain year
-		self.years.searchYear(year, self.cName)
+		self.years.searchYear(year, self.cName, 1)
 
 	def valueInRange(self, lower, higher):		#prints every value inbetween lower and higher
 		self.years.valueInRange(lower, higher)
@@ -287,8 +296,11 @@ class stackYears:
 			else:
 				if int(year) < int(self.peek()[0]):
 					self.push(tuple([int(year), float(value)]))
+					break
 				else:
 					stackAux.push(self.pop())
+					if self.size() == 0:
+						self.push(tuple([int(year), float(value)]))
 
 		self.concatenate(stackAux)
 
@@ -320,18 +332,19 @@ class stackYears:
 				stackAux.push(self.pop())
 		self.concatenate(stackAux)
 			
-	def removeInfo(self, year):			#removes a year/value pair
+	def removeInfo(self, year, mode):			#removes a year/value pair
 		stackAux = stackYears()
 		for i in range(0, self.size()):
 			if int(year) == int(self.peek()[0]):
 				self.pop()
-				print("\nData from the year " + str(year) + " successfully removed!\n")
+				if mode == 1:
+					print("\nData from the year " + str(year) + " successfully removed!\n")
 				break
 			else:
 				stackAux.push(self.pop())
 		self.concatenate(stackAux)
 
-	def searchYear(self, year, cName):
+	def searchYear(self, year, cName, mode):	#1 = normal use, 0 = benchmark
 		if self.size() > 0:
 			if int(year) < int(self.peek()[0]):
 				print("There's no info about that year.")
@@ -342,7 +355,8 @@ class stackYears:
 
 			for i in range(0, self.size()):
 				if int(year) == int(self.peek()[0]):
-					print("In " + str(year) + ", " + str(self.peek()[1]) + "%" + " of the population had access to electricity in " + str(cName))
+					if mode == 1:
+						print("In " + str(year) + ", " + str(self.peek()[1]) + "%" + " of the population had access to electricity in " + str(cName))
 					found = 1
 					break
 
@@ -369,38 +383,39 @@ class stackYears:
 def benchmarkingAddYearsStart(stack):
     nYears = inputInt("\nNumber of years to add:\n>")
     start = time.time()
-    yearsStack = stack.peek().getYears()
+    yearsStack = stack.search('PRT', 9)
     for i in reversed(range( -nYears, 0)):
         yearsStack.addInfo(i, i)
-        print(i)
     end = time.time()
     print('[BEGINNING] - Done in ' + str(end - start) + ' seconds...')
     benchmarkingSearchYears(stack, yearsStack, -nYears, 0)
 
+
 def benchmarkingAddYearsEnd(stack):
     nYears = inputInt("\nNumber of years to add:\n>")
     start = time.time()
-    yearsStack = stack.getNodeCountry("PRT").getYears()
+    yearsStack = stack.search('PRT', 9)
     for i in range(2100, 2100+nYears):
-        yearsStack.addYear(i, i)
+        yearsStack.addInfo(i, i)
+        #print(i)
     end = time.time()
+    #print(yearsStack.displayInfo(stackYears()))
     print('[END] - Done in ' + str(end - start) + ' seconds...')
     benchmarkingSearchYears(stack, yearsStack, 2100, 2100+nYears)
 
 def benchmarkingSearchYears(stack, yearsStack, min, max):
     start = time.time()
     for i in range(min, max):
-        yearsStack.getNodeYear(i)
+        yearsStack.searchYear(i, '', 0)
 
     end = time.time()
-    print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
+    print('[SEARCH] - Done in ' + str(end - start) + ' seconds...')
     benchmarkingRemoveYears(stack, yearsStack, min, max)
-
 
 def benchmarkingRemoveYears(stack, yearsStack, min, max):
     start = time.time()
     for i in range(min, max):
-        yearsStack.removeYear(i)
+        yearsStack.removeInfo(i, 0)
 
     end = time.time()
     print('[REMOVE] - Done in ' + str(end - start) + ' seconds...')
@@ -409,7 +424,7 @@ def benchmarkingAddCountries(stack):
     nCountries = inputInt("\nNumber of countries to add:\n>")
     start = time.time()
     for i in range(nCountries):
-        stack.addCountry([str(i), str(i)])
+        stack.addCountryB(str(i), str(i))
     end = time.time()
     print('Added all the countries in ' + str(end - start) + ' seconds...')
     benchmarkingSearchCountries(stack, nCountries)
@@ -417,7 +432,7 @@ def benchmarkingAddCountries(stack):
 def benchmarkingSearchCountries(stack, nCountries):
     start = time.time()
     for i in range(nCountries):
-        stack.getNodeCountry(str(i))
+        stack.search(str(i), -1)
     end = time.time()
     print('Searched all the countries in ' + str(end - start) + ' seconds...')
     benchmarkingRemoveCountries(stack, nCountries)
@@ -425,7 +440,7 @@ def benchmarkingSearchCountries(stack, nCountries):
 def benchmarkingRemoveCountries(stack, nCountries):
     start = time.time()
     for i in range(nCountries):
-        stack.removeCountry(str(i))
+        stack.search(str(i), 5)
     end = time.time()
     print('Removed all the coutries in ' + str(end - start) + ' seconds...')
 
@@ -459,3 +474,5 @@ if __name__ == '__main__':
 	#saveStrutToCSV(stack)
 	
 	benchmarkingAddYearsStart(stack)
+	benchmarkingAddYearsEnd(stack)
+	benchmarkingAddCountries(stack)

@@ -1,4 +1,4 @@
-#import monteiro as monteiro
+import stacks as stacks
 import doubleLinkedLists as dll
 import AVL_Sopas as AVL
 
@@ -16,11 +16,12 @@ def inputInt(string):
 
 def loadStructures():  # loads the structures to be used in the program
     DoubleLinkedLists = dll.loadCsvToArray()
-    monteiro = "Stacks"  # chage this for the load
+    stack = stacks.loadStrut()# chage this for the load
+    stack.invert(stacks.stackCountries())
     countriesAVL = AVL.load() # chage this for the load
     tagDic= AVL.loadToDict()
 
-    return [monteiro, DoubleLinkedLists, countriesAVL, tagDic]
+    return [stack, DoubleLinkedLists, countriesAVL, tagDic]	#countriesAVL + tagDic == sopas
 
 
 def menuDataStrut():
@@ -61,8 +62,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
         # delete the "continues"
         if choice == 1:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.search('', 0)
             elif structPicked == 2:
                 dll.allYearsFromCountry(countriesList)
             elif structPicked == 3:
@@ -70,8 +70,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 2:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.displayInfoForYear()
             elif structPicked == 2:
                 dll.allCountryFromYear(countriesList)
             elif structPicked == 3:
@@ -80,8 +79,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 3:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.search('', 7)
             elif structPicked == 2:
                 dll.oneYearFromOneCoutry(countriesList)
             elif structPicked == 3:
@@ -89,8 +87,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 4:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.displayInfo()
             elif structPicked == 2:
                 dll.allYearsFromAllCountries(countriesList)
             elif structPicked == 3:
@@ -98,8 +95,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 5:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.search('', 8)
             elif structPicked == 2:
                 dll.RangeOfDataOfOneCountry(countriesList)
             elif structPicked == 3:
@@ -107,8 +103,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 6:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.search('', 6)
             elif structPicked == 2:
                 dll.editYearOfACountry(countriesList)
             elif structPicked == 3:
@@ -117,8 +112,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 7:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.search('', 2)
             elif structPicked == 2:
                 dll.editValueOfAYear(countriesList)
             elif structPicked == 3:
@@ -126,8 +120,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 8:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.search('', 5)
             elif structPicked == 2:
                 dll.removeCountry(countriesList)
             elif structPicked == 3:
@@ -135,8 +128,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 9:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.search('', 3)
             elif structPicked == 2:
                 dll.removeYearFromCountry(countriesList)
             elif structPicked == 3:
@@ -144,8 +136,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 10:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.addCountry()
             elif structPicked == 2:
                 dll.addCountry(countriesList)
             elif structPicked == 3:
@@ -153,8 +144,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 11:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                countriesStack.search('', 1)
             elif structPicked == 2:
                 dll.addYearToCountry(countriesList)
             elif structPicked == 3:
@@ -162,8 +152,8 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
 
         elif choice == 12:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                stacks.benchmarkingAddYearsStart(countriesStack)
+                stacks.benchmarkingAddYearsEnd(countriesStack)
             elif structPicked == 2:
                 dll.benchmarkingAddYearsMiddle(countriesList)
                 dll.benchmarkingAddYearsStart(countriesList)
@@ -172,8 +162,7 @@ def menu(countriesStack, countriesList, countriesAVL, structPicked, tagDic):
                 AVL.benchmarkingAddYears(countriesAVL)
         elif choice == 13:
             if structPicked == 1:
-                continue
-            # @SOPAS STRUT FUNCTION HERE
+                stacks.benchmarkingAddCountries(countriesStack)
             elif structPicked == 2:
                 dll.benchmarkingAddCountries(countriesList)
             elif structPicked == 3:
