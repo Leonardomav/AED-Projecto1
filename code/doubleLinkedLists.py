@@ -291,8 +291,9 @@ class YearsList:
 
 csv.register_dialect('AED', delimiter=';') #registers a new dialect, separated with ";", instead of the default ","
 
-#loads the csv file to struct
-def loadCsv():
+#loads the csv file to @Leo struct
+def loadCsvToArray():
+    #loads the csv file into an array of arrays, 1
     with open('dados.csv','r') as file:             
         reader = csv.reader(file, dialect='AED')    
         countries = CountryList()
@@ -388,7 +389,7 @@ def allCountryFromYear(ListCountries):
 #Prints the value of one year of one given country
 def oneYearFromOneCoutry(ListCountries):
     countryPicked = pickCountry(ListCountries)
-    if country != None:
+    if countryPicked != None:
         if countryPicked.getYears() != None:
             yearPicked = inputInt("\nWhat year do you want?\n> ")
             yearNode = countryPicked.getYears().getNodeYear(yearPicked)
@@ -432,12 +433,12 @@ def RangeOfDataOfOneCountry(ListCountries):
         
 #if it exists, edits one year of a country
 def editYearOfACountry(ListCountries):
-    Country = pickCountry(ListCountries)
+    country = pickCountry(ListCountries)
     if country != None:
-        if Country.getYears() != None:
+        if country.getYears() != None:
             yearPicked = inputInt("\nWhat year do you want to edit?\n> ")
             newYear = inputInt("What year do you want to insert?\n> ")
-            checker = Country.getYears().editYear(yearPicked, newYear)
+            checker = country.getYears().editYear(yearPicked, newYear)
             checkBool(checker)
 
     else:
@@ -445,12 +446,12 @@ def editYearOfACountry(ListCountries):
          
 #if it exists, edits the value of one year of a country
 def editValueOfAYear(ListCountries):
-    Country = pickCountry(ListCountries)
+    country = pickCountry(ListCountries)
     if country != None:
-        if Country.getYears() != None:
+        if country.getYears() != None:
             yearPicked = inputInt("\nWhat year do you want to edit?\n> ")
             newValue = inputFloat("What value do you want to insert?\n> ")
-            checker = Country.getYears().editValue(yearPicked, newValue)
+            checker = country.getYears().editValue(yearPicked, newValue)
             checkBool(checker)
 
     else:
@@ -459,8 +460,8 @@ def editValueOfAYear(ListCountries):
 #Remove completly one country
 def removeCountry(ListCountries):
     printAllCountries(ListCountries)
-    Country = input("\nWhat country do you want to remove?\n> ")
-    checker = ListCountries.removeCountry(Country)
+    country = input("\nWhat country do you want to remove?\n> ")
+    checker = ListCountries.removeCountry(country)
     checkBool(checker)
     
 #Remove avalable info for one year of one country
