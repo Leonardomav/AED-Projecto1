@@ -237,7 +237,7 @@ class AVLTreeCountry():
                 return
             elif country < self.node.country:
                 self.node.left.delete(country)
-            elif country > self.node.coutry:
+            elif country > self.node.country:
                 self.node.right.delete(country)
 
             self.rebalance()
