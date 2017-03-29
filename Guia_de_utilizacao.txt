@@ -1,0 +1,10 @@
+Interpretador - 
+	1)Abrir o seu interpretador
+	2)Abrir o projecto em causa
+	3)Interpretar e correr o ficheiro project.py
+	4)Seguir as instruções fornecidas pelos diversos menus
+
+Terminal - 
+	1)Abrir o terminal e prosseguir para a localização do projecto
+	2)Interpretar correndo o comando "python3 project.py"
+	3)Seguir as instruções fornecidas pelos diversos menus
